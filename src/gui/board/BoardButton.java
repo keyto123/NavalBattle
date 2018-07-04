@@ -3,11 +3,14 @@ package gui.board;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import game.boats.BoatType;
+
 public class BoardButton extends JButton {
 
 	private int posX;
 	private int posY;
-	private boolean boat;
+	private boolean hasBoat;
+	private BoatType boatType = null;
 
 	public int getPosX() {
 		return posX;
@@ -18,7 +21,19 @@ public class BoardButton extends JButton {
 	}
 
 	public boolean hasBoat() {
-		return boat;
+		return hasBoat;
+	}
+	
+	public void setHasBoat(boolean hasBoat) {
+		this.hasBoat = hasBoat;
+	}
+
+	public BoatType getBoatType() {
+		return boatType;
+	}
+
+	public void setBoatType(BoatType boatType) {
+		this.boatType = boatType;
 	}
 
 	public BoardButton(int x, int y, ImageIcon enabledIcon, ImageIcon disabledIcon, boolean boat) {
@@ -26,7 +41,7 @@ public class BoardButton extends JButton {
 		this.posY = y;
 		this.setIcon(enabledIcon);
 		this.setDisabledIcon(disabledIcon);
-		this.boat = boat;
+		this.hasBoat = boat;
 		this.setBorder(null);
 	}
 }

@@ -1,5 +1,6 @@
 package gui.board;
 
+import java.awt.Color;
 import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
@@ -24,11 +25,12 @@ public abstract class Board extends BasePanel {
 	}
 
 	protected void initButtons() {
-		// playerButtons
 		for (int i = 0; i < buttons.length; i++) {
 			for (int j = 0; j < buttons[0].length; j++) {
 				buttons[i][j] = new BoardButton(i, j, null, null, false);
 				buttons[i][j].setBounds(j * 27, 30 + i * 27, Util.buttonWidth, Util.buttonHeight);
+				buttons[i][j].setBorder(null);
+				buttons[i][j].setBackground(Color.BLUE);
 				this.add(buttons[i][j]);
 			}
 		}
