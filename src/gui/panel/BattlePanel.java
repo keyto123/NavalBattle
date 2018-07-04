@@ -2,7 +2,8 @@ package gui.panel;
 
 import javax.swing.JButton;
 
-import game.Configs;
+import game.Util;
+import game.boats.BoatType;
 import gui.GameFrame;
 import gui.board.Board;
 import gui.board.CpuBoard;
@@ -12,12 +13,14 @@ public class BattlePanel extends GamePanel {
 
 	private JButton finish = new JButton("Finish");
 
-	private Board cpuPanel = new CpuBoard();
-	private Board playerPanel = new PlayerBoard();
-
+	private Board cpuPanel = new CpuBoard(frame);
+	private Board playerPanel = new PlayerBoard(frame);
+	private BoatPanel boatPanel = new BoatPanel(frame);
+	
 	public BattlePanel(GameFrame frame) {
 		super(800, 600, frame);
-
+		this.setBackgroundImage(null);
+		
 		initButtons();
 		initLabels();
 		initPanels();
@@ -35,17 +38,28 @@ public class BattlePanel extends GamePanel {
 	}
 
 	private void initPanels() {
-		playerPanel.setBounds(Configs.minButtonX + 20, Configs.minButtonY, playerPanel.getWidth(),
+		playerPanel.setBounds(Util.minButtonX + 20, Util.minButtonY, playerPanel.getWidth(),
 				playerPanel.getHeight());
 		this.add(playerPanel);
 
-		cpuPanel.setBounds(Configs.minButtonX + playerPanel.getWidth() + 25, Configs.minButtonY, cpuPanel.getWidth(),
+		cpuPanel.setBounds(Util.minButtonX + playerPanel.getWidth() + 25, Util.minButtonY, cpuPanel.getWidth(),
 				cpuPanel.getHeight());
 		this.add(cpuPanel);
+		
+		boatPanel.setBounds(Util.minButtonX, playerPanel.getHeight() + 5 + Util.minButtonY, boatPanel.getWidth(), boatPanel.getHeight());
+		this.add(boatPanel);
 	}
 
 	private void finish_buttonAction() {
 		frame.battleFinished();
+	}
+	
+	public void setBoat(BoatType boat, int posx, int posy, boolean player) {
+		if(player) {
+			
+		} else {
+			
+		}
 	}
 
 }

@@ -19,6 +19,7 @@ public class GameFrame extends JFrame {
 		startPanel.setVisible(true);
 		this.add(startPanel);
 		
+		this.setResizable(false);
 		this.setVisible(true);
 	}
 	
