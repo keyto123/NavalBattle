@@ -1,17 +1,22 @@
 package gui.board;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import gui.BoardButton;
-import gui.GameFrame;
 import gui.panel.BattlePanel;
 
 public class CpuBoard extends Board {
 
-	BattlePanel mainPanel;
+	private BattlePanel mainPanel;
 	
-	public CpuBoard(GameFrame frame) {
-		super("CPU", e -> buttonAction(e), frame);
+	private ActionListener listener = e -> {
+		buttonAction(e);
+	};
+	
+	public CpuBoard(BattlePanel panel) {
+		super("CPU");
+		this.setButtonsListener(listener);
+		mainPanel = panel;
 	}
 	
 	private static void buttonAction(ActionEvent e) {

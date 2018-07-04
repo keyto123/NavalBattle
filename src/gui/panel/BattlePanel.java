@@ -2,8 +2,8 @@ package gui.panel;
 
 import javax.swing.JButton;
 
+import game.GameManager;
 import game.Util;
-import game.boats.BoatType;
 import gui.GameFrame;
 import gui.board.Board;
 import gui.board.CpuBoard;
@@ -13,10 +13,15 @@ public class BattlePanel extends GamePanel {
 
 	private JButton finish = new JButton("Finish");
 
-	private Board cpuPanel = new CpuBoard(frame);
-	private Board playerPanel = new PlayerBoard(frame);
-	private BoatPanel boatPanel = new BoatPanel(frame);
+	private PlayerBoard playerPanel = new PlayerBoard(this);
+	private CpuBoard cpuPanel = new CpuBoard(this);
+	private BoatPanel boatPanel = new BoatPanel(this);
+	private GameManager gm = new GameManager(playerPanel, cpuPanel, boatPanel);
 	
+	public GameManager getGm() {
+		return gm;
+	}
+
 	public BattlePanel(GameFrame frame) {
 		super(800, 600, frame);
 		this.setBackgroundImage(null);
@@ -52,14 +57,6 @@ public class BattlePanel extends GamePanel {
 
 	private void finish_buttonAction() {
 		frame.battleFinished();
-	}
-	
-	public void setBoat(BoatType boat, int posx, int posy, boolean player) {
-		if(player) {
-			
-		} else {
-			
-		}
 	}
 
 }

@@ -1,22 +1,54 @@
 package gui.board;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import gui.BoardButton;
-import gui.Communicable;
-import gui.GameFrame;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
+import game.boats.BoatType;
 import gui.panel.BattlePanel;
 
 public class PlayerBoard extends Board {
 	
-	public PlayerBoard(GameFrame frame) {
-		super("PLAYER", e -> buttonAction(e), frame);
+	private BattlePanel parentPanel;
+	
+	private ActionListener listener = e -> {
+		buttonAction(e);
+	};
+	
+	public PlayerBoard(BattlePanel panel) {
+		super("PLAYER");
+		this.setButtonsListener(listener);
+		parentPanel = panel;
 	}
 
-	private static void buttonAction(ActionEvent e) {
-		System.out.println("Hai from player");
+	private void buttonAction(ActionEvent e) {
+		BoatType bt = parentPanel.getGm().getSelectedBoatType();
 		BoardButton b = (BoardButton) e.getSource();
-		b.setEnabled(false);
+		if(b.getIcon() == null && bt != null) {
+			ImageIcon parts[] = bt.getIconParts();
+			
+			int x = b.getPosX(), y = b.getPosY();
+			
+			if(buttons[0].length - y < parts.length) {
+				JOptionPane.showMessageDialog(this, "You fucking troll");
+				return;
+			}
+			
+			for(int i = 0; i < parts.length; i++) {
+				if(buttons[x][y + 1].getIcon() != null) {
+					JOptionPane.showMessageDialog(this, "Die man, stop trolling");
+					return;
+				}
+			}
+			
+			for(int i = 0; i < parts.length; i++) {
+				buttons[x][y + i].setIcon(parts[i]);
+			}			
+		} else {
+			//b.setEnabled(false);			
+		}
 	}
 
 }
