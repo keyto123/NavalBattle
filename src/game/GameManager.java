@@ -26,5 +26,7 @@ public final class GameManager {
 		return selectedBoat;
 	}
 	
-	
+	public void updateQuantities() {
+		boatPanel.updateQuantities();
+	}
 }

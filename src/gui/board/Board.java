@@ -3,10 +3,12 @@ package gui.board;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import game.Util;
-import gui.GameFrame;
+import game.boats.BoatType;
 import gui.panel.BasePanel;
 
 public abstract class Board extends BasePanel {
@@ -30,6 +32,7 @@ public abstract class Board extends BasePanel {
 				buttons[i][j] = new BoardButton(i, j, null, null, false);
 				buttons[i][j].setBounds(j * 27, 30 + i * 27, Util.buttonWidth, Util.buttonHeight);
 				buttons[i][j].setBorder(null);
+				buttons[i][j].setIcon(Util.waterIcon);
 				buttons[i][j].setBackground(Color.BLUE);
 				this.add(buttons[i][j]);
 			}
@@ -62,5 +65,60 @@ public abstract class Board extends BasePanel {
 
 	public boolean hasBoat(int x, int y) {
 		return buttons[x][y].hasBoat();
+	}
+	
+	protected boolean setButtonBoat(BoardButton b, BoatType bt) {
+		if(bt == null) {
+			return false;
+		}
+		
+		if(!checkValidBoatPosition(b, bt)) {
+			return false;
+		}
+		
+		ImageIcon parts[] = bt.getIconParts();
+		int x = b.getPosX(), y = b.getPosY();
+		
+		buttons[x][y].setHead(true);
+		for (int i = 0; i < parts.length; i++) {
+			buttons[x][y + i].setIcon(parts[i]);
+			buttons[x][y + i].setDisabledIcon(parts[i]);
+			buttons[x][y + i].setHasBoat(true);
+		}
+		b.setBoatType(bt);
+		
+		return true;
+	}
+	
+	protected boolean removeButtonBoat(BoardButton b) {
+		BoatType bt = b.getBoatType();
+		if(bt == null) {
+			return false;
+		} else {
+			b.setHead(false);
+			int x = b.getPosX(), y = b.getPosY();
+			for(int i = 0; i < bt.getLength(); i++) {
+				buttons[x][y + i].setIcon(Util.waterIcon);
+				buttons[x][y + i].setDisabledIcon(null);
+				buttons[x][y + i].setHasBoat(false);
+			}
+			return true;
+		}
+	}
+	
+	protected boolean checkValidBoatPosition(BoardButton b, BoatType bt) {
+		ImageIcon parts[] = bt.getIconParts();
+		int x = b.getPosX(), y = b.getPosY();
+		
+		if (buttons[0].length - y < parts.length) {
+			return false;
+		}
+
+		for (int i = 0; i < parts.length; i++) {
+			if (buttons[x][y + 1].hasBoat() == true) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

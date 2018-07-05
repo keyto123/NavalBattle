@@ -6,6 +6,7 @@ import javax.swing.JButton;
 public class BoatButton extends JButton {
 	
 	private BoatType boatType;
+	private int quantity = 2;
 	
 	public BoatButton(BoatType boat) {
 		this.boatType = boat;
@@ -20,5 +21,9 @@ public class BoatButton extends JButton {
 	
 	public BoatType getBoatType() {
 		return boatType;
+	}
+	
+	public int getQuantity() {
+		return quantity;
 	}
 }

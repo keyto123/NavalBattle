@@ -3,9 +3,9 @@ package gui.board;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import game.GameManager;
 import game.boats.BoatType;
 import gui.panel.BattlePanel;
 
@@ -24,61 +24,30 @@ public class PlayerBoard extends Board {
 	}
 
 	private void buttonAction(ActionEvent e) {
-		BoatType bt = parentPanel.getGm().getSelectedBoatType();
+		GameManager gm = parentPanel.getGm();
+		BoatType bt = gm.getSelectedBoatType();
 		BoardButton b = (BoardButton) e.getSource();
 
-		if (bt == null) {
-			return;
-		}
-
 		if (b.hasBoat() == false) {
-			if(checkValidBoatPosition(b, bt)) {
-				this.setButtonBoard(b, bt);
+
+			if (!this.setButtonBoat(b, bt) && bt != null) {
+				JOptionPane.showMessageDialog(this, "Invalid position");
+				bt.quantity++;
 			}
+			
 		} else {
-			BoatType curBoat = b.getBoatType();
-			int length = curBoat.getLength();
-
-			int x = b.getPosX(), y = b.getPosY();
-
-			for (int i = 0; i < length; i++) {
-				buttons[x][y + i].setHasBoat(false);
-				buttons[x][y + i].setIcon(null);
-				buttons[x][y + i].setDisabledIcon(null);
+			while (!b.isHead()) {
+				b = buttons[b.getPosX()][b.getPosY() - 1];
 			}
+			removeButtonBoat(b);
+			b.getBoatType().quantity++;
 
-			parentPanel.getGm().setSelectedBoatType(b.getBoatType());
-		}
-	}
-	
-	private void setButtonBoard(BoardButton b, BoatType bt) {
-		ImageIcon parts[] = bt.getIconParts();
-		int x = b.getPosX(), y = b.getPosY();
-		
-		for (int i = 0; i < parts.length; i++) {
-			buttons[x][y + i].setIcon(parts[i]);
-			buttons[x][y + i].setDisabledIcon(null);
-			buttons[x][y + i].setHasBoat(true);
-		}
-		b.setBoatType(bt);
-	}
-	
-	private boolean checkValidBoatPosition(BoardButton b, BoatType bt) {
-		ImageIcon parts[] = bt.getIconParts();
-		int x = b.getPosX(), y = b.getPosY();
-		
-		if (buttons[0].length - y < parts.length) {
-			JOptionPane.showMessageDialog(this, "You fucking troll");
-			return false;
-		}
-
-		for (int i = 0; i < parts.length; i++) {
-			if (buttons[x][y + 1].getIcon() != null) {
-				JOptionPane.showMessageDialog(this, "Die man, stop trolling");
-				return false;
+			if (bt != null) {
+				bt.quantity++;
 			}
 		}
-		return true;
+		gm.updateQuantities();
+		gm.setSelectedBoatType(null);
 	}
 
 }

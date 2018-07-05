@@ -9,7 +9,8 @@ public class BoardButton extends JButton {
 
 	private int posX;
 	private int posY;
-	private boolean hasBoat;
+	private boolean hasBoat = false;
+	private boolean isHead = false;
 	private BoatType boatType = null;
 
 	public int getPosX() {
@@ -34,6 +35,14 @@ public class BoardButton extends JButton {
 
 	public void setBoatType(BoatType boatType) {
 		this.boatType = boatType;
+	}
+	
+	public boolean isHead() {
+		return isHead;
+	}
+
+	public void setHead(boolean isHead) {
+		this.isHead = isHead;
 	}
 
 	public BoardButton(int x, int y, ImageIcon enabledIcon, ImageIcon disabledIcon, boolean boat) {
