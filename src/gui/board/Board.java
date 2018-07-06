@@ -97,6 +97,7 @@ public abstract class Board extends BasePanel {
 		} else {
 			b.setHead(false);
 			int x = b.getPosX(), y = b.getPosY();
+			// lala
 			for(int i = 0; i < bt.getLength(); i++) {
 				buttons[x][y + i].setIcon(Util.waterIcon);
 				buttons[x][y + i].setDisabledIcon(null);
