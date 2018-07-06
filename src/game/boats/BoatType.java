@@ -4,7 +4,7 @@ import javax.swing.ImageIcon;
 
 import game.Util;
 
-public abstract class BoatType {
+public class BoatType {
 	private ImageIcon fullBoat;
 	private ImageIcon boatParts[];
 	private int length;

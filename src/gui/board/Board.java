@@ -5,12 +5,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import game.Util;
 import game.boats.BoatType;
 import gui.panel.BasePanel;
 
+@SuppressWarnings("serial")
 public abstract class Board extends BasePanel {
 
 	protected BoardButton buttons[][] = new BoardButton[Util.boardSize][Util.boardSize];
@@ -115,7 +115,7 @@ public abstract class Board extends BasePanel {
 		}
 
 		for (int i = 0; i < parts.length; i++) {
-			if (buttons[x][y + 1].hasBoat() == true) {
+			if (buttons[x][y + i].hasBoat() == true) {
 				return false;
 			}
 		}

@@ -4,6 +4,7 @@ import javax.swing.JButton;
 
 import gui.GameFrame;
 
+@SuppressWarnings("serial")
 public abstract class GamePanel extends BasePanel {
 
 	protected JButton quit = new JButton("Quit");

@@ -4,6 +4,7 @@ import javax.swing.JButton;
 
 import gui.GameFrame;
 
+@SuppressWarnings("serial")
 public class StartPanel extends GamePanel {
 	
 	private JButton start = new JButton("Play");

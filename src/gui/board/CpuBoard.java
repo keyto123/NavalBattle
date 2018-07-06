@@ -9,9 +9,10 @@ import javax.swing.JOptionPane;
 import game.boats.BoatUtils;
 import gui.panel.BattlePanel;
 
+@SuppressWarnings("serial")
 public class CpuBoard extends Board {
 
-	private BattlePanel mainPanel;
+	//private BattlePanel mainPanel;
 
 	private Random rand = new Random();
 
@@ -23,7 +24,7 @@ public class CpuBoard extends Board {
 		super("CPU");
 		this.setButtonsListener(listener);
 		this.initBoats();
-		mainPanel = panel;
+		//mainPanel = panel;
 		// this.disableButtons();
 	}
 

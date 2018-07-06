@@ -9,6 +9,7 @@ import game.GameManager;
 import game.boats.BoatType;
 import gui.panel.BattlePanel;
 
+@SuppressWarnings("serial")
 public class PlayerBoard extends Board {
 
 	private BattlePanel parentPanel;

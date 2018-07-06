@@ -5,6 +5,7 @@ import javax.swing.JButton;
 
 import game.boats.BoatType;
 
+@SuppressWarnings("serial")
 public class BoardButton extends JButton {
 
 	private int posX;

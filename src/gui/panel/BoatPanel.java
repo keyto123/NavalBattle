@@ -7,13 +7,15 @@ import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 
 import game.boats.BoatButton;
+import game.boats.BoatType;
 import game.boats.BoatUtils;
 
+@SuppressWarnings("serial")
 public class BoatPanel extends BasePanel {
 
 	private JLabel name = new JLabel("Boats");
-	private BoatButton boat1 = new BoatButton(BoatUtils.boats[0]);
-	private JLabel boat1Quantity = new JLabel();
+	private BoatButton boats[];
+	private JLabel boatQuantities[];
 	private BattlePanel parentPanel;
 
 	public BoatPanel(BattlePanel panel) {
@@ -24,6 +26,9 @@ public class BoatPanel extends BasePanel {
 		name.setBounds(350, 0, 100, 25);
 		this.add(name);
 
+		boats = new BoatButton[BoatUtils.boats.length];
+		boatQuantities = new JLabel[BoatUtils.boats.length];
+
 		initButtons();
 
 		this.setVisible(true);
@@ -31,29 +36,46 @@ public class BoatPanel extends BasePanel {
 
 	private ActionListener listener = e -> {
 		BoatButton b = (BoatButton) e.getSource();
-		if(b.getBoatType().quantity > 0) {
-			b.getBoatType().quantity--;
-			parentPanel.getGm().setSelectedBoatType(b.getBoatType());
-			boat1Quantity.setText(b.getBoatType().quantity + "");
+		BoatType bt = b.getBoatType();
+		if (bt.quantity > 0) {
+			bt.quantity--;
+			parentPanel.getGm().setSelectedBoatType(bt);
+			updateQuantities();
 		}
 	};
-	
+
 	public void updateQuantities() {
-		boat1Quantity.setText(boat1.getBoatType().quantity + "");
+		for (int i = 0; i < boats.length; i++) {
+			BoatType bt = boats[i].getBoatType();
+			boatQuantities[i].setText(bt.quantity + "");
+		}
 	}
 
 	private void initButtons() {
-		Rectangle r = new Rectangle(100, 25, boat1.getWidth(), boat1.getHeight());
+		Rectangle r = new Rectangle();
 
-		boat1.setBounds(r);
-		boat1.setBorder(null);
-		boat1.setBackground(Color.GRAY);
-		boat1.addActionListener(listener);
-		this.add(boat1);
+		// Init Boats and Labels
+		for (int i = 0; i < boats.length; i++) {
+			boats[i] = new BoatButton(BoatUtils.boats[i]);
+			boatQuantities[i] = new JLabel();
+		}
 
-		r = new Rectangle(r.x - 50, r.y, 45, 25);
-		boat1Quantity.setBounds(r);
-		boat1Quantity.setText(boat1.getBoatType().quantity + "");
-		this.add(boat1Quantity);
+		for (int i = 0; i < boats.length; i++) {
+			for (int j = 0; j < 2 && i < boats.length; j++, i++) {
+				BoatType bt = boats[i].getBoatType();
+				r = new Rectangle(100 + (i / 2 * 100), 25 + (j * 30), boats[i].getWidth(), boats[i].getHeight());
+				boats[i].setBounds(r);
+				boats[i].setBorder(null);
+				boats[i].setBackground(Color.GRAY);
+				boats[i].addActionListener(listener);
+				this.add(boats[i]);
+				
+				r = new Rectangle(r.x - 50, r.y, 45, 25);
+				boatQuantities[i].setBounds(r);
+				boatQuantities[i].setText(bt.quantity + "");
+				this.add(boatQuantities[i]);
+			}
+		}
+
 	}
 }

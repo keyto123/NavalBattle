@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import gui.GameFrame;
 
+@SuppressWarnings("serial")
 public abstract class BasePanel extends JPanel {
 	
 	private Image backgroundImage;

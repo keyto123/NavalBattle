@@ -5,10 +5,10 @@ import javax.swing.JButton;
 import game.GameManager;
 import game.Util;
 import gui.GameFrame;
-import gui.board.Board;
 import gui.board.CpuBoard;
 import gui.board.PlayerBoard;
 
+@SuppressWarnings("serial")
 public class BattlePanel extends GamePanel {
 
 	private JButton finish = new JButton("Finish");
