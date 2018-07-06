@@ -20,7 +20,7 @@ public abstract class Board extends BasePanel {
 	protected Board(String name) {
 		super(300, 300, null);
 		this.title.setBounds(150 - name.length() * 8, 0, 100, 25);
-		this.title.setText(name);		
+		this.title.setText(name);
 		this.add(this.title);
 
 		this.initButtons();
@@ -38,10 +38,10 @@ public abstract class Board extends BasePanel {
 			}
 		}
 	}
-	
+
 	protected void setButtonsListener(ActionListener listener) {
-		for(BoardButton[] row : buttons) {
-			for(BoardButton col : row) {
+		for (BoardButton[] row : buttons) {
+			for (BoardButton col : row) {
 				col.addActionListener(listener);
 			}
 		}
@@ -66,19 +66,19 @@ public abstract class Board extends BasePanel {
 	public boolean hasBoat(int x, int y) {
 		return buttons[x][y].hasBoat();
 	}
-	
+
 	protected boolean setButtonBoat(BoardButton b, BoatType bt) {
-		if(bt == null) {
+		if (bt == null) {
 			return false;
 		}
-		
-		if(!checkValidBoatPosition(b, bt)) {
+
+		if (!checkValidBoatPosition(b, bt)) {
 			return false;
 		}
-		
+
 		ImageIcon parts[] = bt.getIconParts();
 		int x = b.getPosX(), y = b.getPosY();
-		
+
 		buttons[x][y].setHead(true);
 		for (int i = 0; i < parts.length; i++) {
 			buttons[x][y + i].setIcon(parts[i]);
@@ -86,19 +86,18 @@ public abstract class Board extends BasePanel {
 			buttons[x][y + i].setHasBoat(true);
 		}
 		b.setBoatType(bt);
-		
+
 		return true;
 	}
-	
+
 	protected boolean removeButtonBoat(BoardButton b) {
 		BoatType bt = b.getBoatType();
-		if(bt == null) {
+		if (bt == null) {
 			return false;
 		} else {
 			b.setHead(false);
 			int x = b.getPosX(), y = b.getPosY();
-			// lala
-			for(int i = 0; i < bt.getLength(); i++) {
+			for (int i = 0; i < bt.getLength(); i++) {
 				buttons[x][y + i].setIcon(Util.waterIcon);
 				buttons[x][y + i].setDisabledIcon(null);
 				buttons[x][y + i].setHasBoat(false);
@@ -106,11 +105,11 @@ public abstract class Board extends BasePanel {
 			return true;
 		}
 	}
-	
+
 	protected boolean checkValidBoatPosition(BoardButton b, BoatType bt) {
 		ImageIcon parts[] = bt.getIconParts();
 		int x = b.getPosX(), y = b.getPosY();
-		
+
 		if (buttons[0].length - y < parts.length) {
 			return false;
 		}
