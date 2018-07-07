@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 
+import game.GameManager;
 import game.boats.BoatButton;
 import game.boats.BoatStorage;
 import game.boats.BoatType;
@@ -37,7 +38,9 @@ public class BoatPanel extends BasePanel {
 	}
 
 	private ActionListener listener = e -> {
-		if(!parentPanel.getGm().hasGameStarted()) {
+		GameManager gm = parentPanel.getGm();
+		
+		if(!gm.hasGameStarted()) {
 			boatButton_Function(e);
 		}
 	};
@@ -46,7 +49,6 @@ public class BoatPanel extends BasePanel {
 		BoatButton b = (BoatButton) e.getSource();
 		BoatType bt = b.getBoatType();
 		if (bt.quantity > 0) {
-			bt.quantity--;
 			parentPanel.getGm().setSelectedBoatType(bt);
 			updateQuantities();
 		}
@@ -68,7 +70,7 @@ public class BoatPanel extends BasePanel {
 			boatQuantities[i] = new JLabel();
 		}
 
-		for (int i = 0; i < boats.length; i++) {
+		for (int i = 0; i < boats.length; ) {
 			for (int j = 0; j < 2 && i < boats.length; j++, i++) {
 				BoatType bt = boats[i].getBoatType();
 				r = new Rectangle(100 + (i / 2 * 100), 25 + (j * 30), boats[i].getWidth(), boats[i].getHeight());
@@ -78,7 +80,7 @@ public class BoatPanel extends BasePanel {
 				boats[i].addActionListener(listener);
 				this.add(boats[i]);
 				
-				r = new Rectangle(r.x - 50, r.y, 45, 25);
+				r = new Rectangle(r.x - 15, r.y, 45, 25);
 				boatQuantities[i].setBounds(r);
 				boatQuantities[i].setText(bt.quantity + "");
 				this.add(boatQuantities[i]);

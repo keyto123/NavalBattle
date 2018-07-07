@@ -64,7 +64,7 @@ public class CpuBoard extends Board {
 		do {
 			x = rand.nextInt(10);
 			y = rand.nextInt(10);
-		} while (parentPanel.getGm().cpuAttack(x, y));
+		} while (!parentPanel.getGm().cpuAttack(x, y));
 	}
 
 	public void setAttackSuccess() {

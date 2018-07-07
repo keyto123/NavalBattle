@@ -9,12 +9,13 @@ public class BoatType {
 	private ImageIcon boatParts[];
 	private ImageIcon boatDestroyedParts[];
 	private int length;
-	public int quantity = 2;
+	public int quantity;
 
 	public BoatType(String name, int length) {
 		this.length = length;
 		boatParts = new ImageIcon[length];
 		boatDestroyedParts = new ImageIcon[length];
+		quantity = 5 - length;
 
 		fullBoat = Util.getIcon(name + ".png");
 
