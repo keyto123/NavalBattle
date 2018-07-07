@@ -16,6 +16,7 @@ public class Util {
 	public static final int boardSize = 10;
 	
 	public static final ImageIcon waterIcon = Util.getIcon("water.jpg");
+	public static final ImageIcon disabledWaterIcon = Util.getIcon("disabledWater.jpg");
 
 	public static ImageIcon getIcon(String name) {
 		ImageIcon icon = null;

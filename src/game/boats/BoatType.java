@@ -5,9 +5,11 @@ import javax.swing.ImageIcon;
 import game.Util;
 
 public class BoatType {
+	
 	private ImageIcon fullBoat;
 	private ImageIcon boatParts[];
 	private ImageIcon boatDestroyedParts[];
+	
 	private int length;
 	public int quantity;
 

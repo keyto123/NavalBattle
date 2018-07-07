@@ -49,7 +49,9 @@ public class PlayerBoard extends Board {
 			b.getBoatType().quantity++;
 		}
 		gm.updateQuantities();
-		gm.setSelectedBoatType(null);
+		if(bt.quantity == 0) {
+			gm.setSelectedBoatType(null);			
+		}
 	}
 
 	public boolean receiveAttack(int x, int y) {

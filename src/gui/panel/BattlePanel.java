@@ -4,7 +4,6 @@ import javax.swing.JButton;
 
 import game.GameManager;
 import game.Util;
-import game.boats.BoatStorage;
 import gui.GameFrame;
 import gui.board.CpuBoard;
 import gui.board.PlayerBoard;

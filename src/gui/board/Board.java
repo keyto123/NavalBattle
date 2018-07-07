@@ -33,7 +33,7 @@ public abstract class Board extends BasePanel {
 				buttons[i][j].setBounds(j * 27, 30 + i * 27, Util.buttonWidth, Util.buttonHeight);
 				buttons[i][j].setBorder(null);
 				buttons[i][j].setIcon(Util.waterIcon);
-				buttons[i][j].setDisabledIcon(Util.waterIcon);
+				buttons[i][j].setDisabledIcon(Util.disabledWaterIcon);
 				buttons[i][j].setBackground(Color.BLUE);
 				this.add(buttons[i][j]);
 			}
