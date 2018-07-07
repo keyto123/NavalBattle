@@ -14,7 +14,7 @@ import gui.panel.BattlePanel;
 public class CpuBoard extends Board {
 
 	private BattlePanel parentPanel;
-	
+
 	private Point firstHit;
 	private boolean lastAttackSuccess = false;
 
@@ -22,7 +22,7 @@ public class CpuBoard extends Board {
 	private BoatStorage storage = new BoatStorage();
 
 	private ActionListener listener = e -> {
-		if(parentPanel.getGm().hasGameStarted()) {
+		if (parentPanel.getGm().hasGameStarted()) {
 			buttonAction(e);
 		}
 	};
@@ -36,35 +36,38 @@ public class CpuBoard extends Board {
 	public void initBoats() {
 		int x = 0, y = 0;
 		for (int i = 0; i < storage.getLength(); i++) {
-			for(int j = 0; j < storage.getBoatType(i).quantity; j++) {
+			for (int j = 0; j < storage.getBoatType(i).quantity; j++) {
 				do {
 					x = rand.nextInt(10);
 					y = rand.nextInt(10);
-				} while (!this.setButtonBoat(buttons[x][y], storage.getBoatType(i), false));				
+				} while (!this.setButtonBoat(buttons[x][y], storage.getBoatType(i), false));
 			}
 		}
 	}
 
 	private void buttonAction(ActionEvent e) {
 		BoardButton b = (BoardButton) e.getSource();
-		if (b.hasBoat()) {
-			JOptionPane.showMessageDialog(this, "Very good, little kid");
-		}
 		b.setEnabled(false);
+
+		if(checkFinish()) {
+			parentPanel.getGm().finishGame(false);
+		} else {
+			cpuAttack();
+		}
 		
-		cpuAttack();
+
 	}
-	
+
 	// TODO: use logic
 	private void cpuAttack() {
 		int x, y;
 		do {
 			x = rand.nextInt(10);
 			y = rand.nextInt(10);
-		} while(parentPanel.getGm().cpuAttack(x, y));
+		} while (parentPanel.getGm().cpuAttack(x, y));
 	}
-	
+
 	public void setAttackSuccess() {
-		
+
 	}
 }

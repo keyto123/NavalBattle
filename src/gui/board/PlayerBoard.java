@@ -56,10 +56,12 @@ public class PlayerBoard extends Board {
 		if(!buttons[x][y].isEnabled() || x >= buttons.length || y >= buttons.length) {
 			return false;
 		} else {
-			if(buttons[x][y].hasBoat()) {
-				parentPanel.getGm().setAttackSuccess();
-			}
 			buttons[x][y].setEnabled(false);
+			if(checkFinish()) {
+				parentPanel.getGm().finishGame(true);
+			} else {
+				
+			}
 			return true;
 		}
 	}

@@ -1,5 +1,7 @@
 package game;
 
+import javax.swing.JOptionPane;
+
 import game.boats.BoatType;
 import gui.board.CpuBoard;
 import gui.board.PlayerBoard;
@@ -26,6 +28,17 @@ public final class GameManager {
 	public void startGame() {
 		gameStarted = true;
 		cpuBoard.initBoats();
+	}
+	
+	public void finishGame(boolean player) {
+		if(!player) {
+			JOptionPane.showMessageDialog(playerBoard, "You win!");
+		} else {
+			JOptionPane.showMessageDialog(cpuBoard, "You Lose!");
+		}
+		gameStarted = false;
+		cpuBoard.disableButtons();
+		playerBoard.disableButtons();
 	}
 	
 	public BoatType getSelectedBoatType() {

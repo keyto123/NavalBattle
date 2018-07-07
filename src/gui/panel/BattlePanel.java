@@ -41,7 +41,10 @@ public class BattlePanel extends GamePanel {
 		
 		// Start
 		startGame.setBounds(540, 550, 100, 25);
-		startGame.addActionListener(e -> gm.startGame());
+		startGame.addActionListener(e ->  {
+			gm.startGame();
+			startGame.setEnabled(false);
+		});
 		this.add(startGame);
 	}
 

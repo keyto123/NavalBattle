@@ -2,13 +2,14 @@ package gui.panel;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 
 import game.boats.BoatButton;
-import game.boats.BoatType;
 import game.boats.BoatStorage;
+import game.boats.BoatType;
 
 @SuppressWarnings("serial")
 public class BoatPanel extends BasePanel {
@@ -36,6 +37,12 @@ public class BoatPanel extends BasePanel {
 	}
 
 	private ActionListener listener = e -> {
+		if(!parentPanel.getGm().hasGameStarted()) {
+			boatButton_Function(e);
+		}
+	};
+	
+	private void boatButton_Function(ActionEvent e) {
 		BoatButton b = (BoatButton) e.getSource();
 		BoatType bt = b.getBoatType();
 		if (bt.quantity > 0) {
@@ -43,7 +50,7 @@ public class BoatPanel extends BasePanel {
 			parentPanel.getGm().setSelectedBoatType(bt);
 			updateQuantities();
 		}
-	};
+	}
 
 	public void updateQuantities() {
 		for (int i = 0; i < boats.length; i++) {
@@ -77,6 +84,5 @@ public class BoatPanel extends BasePanel {
 				this.add(boatQuantities[i]);
 			}
 		}
-
 	}
 }

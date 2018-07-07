@@ -125,4 +125,15 @@ public abstract class Board extends BasePanel {
 		}
 		return true;
 	}
+	
+	protected boolean checkFinish() {
+		for (int i = 0; i < buttons.length; i++) {
+			for (int j = 0; j < buttons[0].length; j++) {
+				if (buttons[i][j].isEnabled() && buttons[i][j].hasBoat()) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }
