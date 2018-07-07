@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 
 import game.boats.BoatButton;
 import game.boats.BoatType;
-import game.boats.BoatUtils;
+import game.boats.BoatStorage;
 
 @SuppressWarnings("serial")
 public class BoatPanel extends BasePanel {
@@ -17,6 +17,7 @@ public class BoatPanel extends BasePanel {
 	private BoatButton boats[];
 	private JLabel boatQuantities[];
 	private BattlePanel parentPanel;
+	private BoatStorage storage = new BoatStorage();
 
 	public BoatPanel(BattlePanel panel) {
 		super(800, 200, null);
@@ -26,8 +27,8 @@ public class BoatPanel extends BasePanel {
 		name.setBounds(350, 0, 100, 25);
 		this.add(name);
 
-		boats = new BoatButton[BoatUtils.boats.length];
-		boatQuantities = new JLabel[BoatUtils.boats.length];
+		boats = new BoatButton[storage.getLength()];
+		boatQuantities = new JLabel[storage.getLength()];
 
 		initButtons();
 
@@ -56,7 +57,7 @@ public class BoatPanel extends BasePanel {
 
 		// Init Boats and Labels
 		for (int i = 0; i < boats.length; i++) {
-			boats[i] = new BoatButton(BoatUtils.boats[i]);
+			boats[i] = new BoatButton(storage.getBoatType(i));
 			boatQuantities[i] = new JLabel();
 		}
 

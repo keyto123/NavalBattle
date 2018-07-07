@@ -11,6 +11,7 @@ public final class GameManager {
 	private PlayerBoard playerBoard;
 	private CpuBoard cpuBoard;
 	private BoatType selectedBoat;
+	private boolean gameStarted = false;
 	
 	public GameManager(PlayerBoard playerBoard, CpuBoard cpuBoard, BoatPanel boatPanel) {
 		this.playerBoard = playerBoard;
@@ -22,11 +23,28 @@ public final class GameManager {
 		this.selectedBoat = boatType;
 	}
 	
+	public void startGame() {
+		gameStarted = true;
+		cpuBoard.initBoats();
+	}
+	
 	public BoatType getSelectedBoatType() {
 		return selectedBoat;
 	}
 	
 	public void updateQuantities() {
 		boatPanel.updateQuantities();
+	}
+	
+	public boolean hasGameStarted() {
+		return gameStarted;
+	}
+	
+	public boolean cpuAttack(int x, int y) {
+		return playerBoard.receiveAttack(x, y);
+	}
+	
+	public void setAttackSuccess() {
+		
 	}
 }

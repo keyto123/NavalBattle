@@ -15,7 +15,8 @@ public class PlayerBoard extends Board {
 	private BattlePanel parentPanel;
 
 	private ActionListener listener = e -> {
-		buttonAction(e);
+		if(!parentPanel.getGm().hasGameStarted())
+			buttonAction(e);
 	};
 
 	public PlayerBoard(BattlePanel panel) {
@@ -31,7 +32,7 @@ public class PlayerBoard extends Board {
 
 		if (b.hasBoat() == false) {
 
-			if (!this.setButtonBoat(b, bt) && bt != null) {
+			if (!this.setButtonBoat(b, bt, true) && bt != null) {
 				JOptionPane.showMessageDialog(this, "Invalid position");
 				bt.quantity++;
 			}
@@ -49,6 +50,18 @@ public class PlayerBoard extends Board {
 		}
 		gm.updateQuantities();
 		gm.setSelectedBoatType(null);
+	}
+	
+	public boolean receiveAttack(int x, int y) {
+		if(!buttons[x][y].isEnabled() || x >= buttons.length || y >= buttons.length) {
+			return false;
+		} else {
+			if(buttons[x][y].hasBoat()) {
+				parentPanel.getGm().setAttackSuccess();
+			}
+			buttons[x][y].setEnabled(false);
+			return true;
+		}
 	}
 
 }

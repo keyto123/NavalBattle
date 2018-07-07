@@ -4,6 +4,7 @@ import javax.swing.JButton;
 
 import game.GameManager;
 import game.Util;
+import game.boats.BoatStorage;
 import gui.GameFrame;
 import gui.board.CpuBoard;
 import gui.board.PlayerBoard;
@@ -12,6 +13,7 @@ import gui.board.PlayerBoard;
 public class BattlePanel extends GamePanel {
 
 	private JButton finish = new JButton("Finish");
+	private JButton startGame = new JButton("Start");
 
 	private PlayerBoard playerPanel = new PlayerBoard(this);
 	private CpuBoard cpuPanel = new CpuBoard(this);
@@ -36,6 +38,11 @@ public class BattlePanel extends GamePanel {
 		finish.setBounds(650, 550, 100, 25);
 		finish.addActionListener(e -> finish_buttonAction());
 		this.add(finish);
+		
+		// Start
+		startGame.setBounds(540, 550, 100, 25);
+		startGame.addActionListener(e -> gm.startGame());
+		this.add(startGame);
 	}
 
 	private void initLabels() {

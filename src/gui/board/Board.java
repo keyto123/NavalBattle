@@ -33,6 +33,7 @@ public abstract class Board extends BasePanel {
 				buttons[i][j].setBounds(j * 27, 30 + i * 27, Util.buttonWidth, Util.buttonHeight);
 				buttons[i][j].setBorder(null);
 				buttons[i][j].setIcon(Util.waterIcon);
+				buttons[i][j].setDisabledIcon(Util.waterIcon);
 				buttons[i][j].setBackground(Color.BLUE);
 				this.add(buttons[i][j]);
 			}
@@ -67,7 +68,7 @@ public abstract class Board extends BasePanel {
 		return buttons[x][y].hasBoat();
 	}
 
-	protected boolean setButtonBoat(BoardButton b, BoatType bt) {
+	protected boolean setButtonBoat(BoardButton b, BoatType bt, boolean player) {
 		if (bt == null) {
 			return false;
 		}
@@ -77,12 +78,15 @@ public abstract class Board extends BasePanel {
 		}
 
 		ImageIcon parts[] = bt.getIconParts();
+		ImageIcon destroyedParts[] = bt.getIconDestroyedParts();
 		int x = b.getPosX(), y = b.getPosY();
 
 		buttons[x][y].setHead(true);
 		for (int i = 0; i < parts.length; i++) {
-			buttons[x][y + i].setIcon(parts[i]);
-			buttons[x][y + i].setDisabledIcon(parts[i]);
+			if(player) {
+				buttons[x][y + i].setIcon(parts[i]);
+			}
+			buttons[x][y + i].setDisabledIcon(destroyedParts[i]);
 			buttons[x][y + i].setHasBoat(true);
 		}
 		b.setBoatType(bt);
