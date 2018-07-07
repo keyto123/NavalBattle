@@ -12,7 +12,7 @@ import gui.panel.BasePanel;
 
 @SuppressWarnings("serial")
 public abstract class Board extends BasePanel {
-
+	
 	protected BoardButton buttons[][] = new BoardButton[Util.boardSize][Util.boardSize];
 
 	private JLabel title = new JLabel();
