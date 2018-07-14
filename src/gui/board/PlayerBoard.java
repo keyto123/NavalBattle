@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import game.GameManager;
+import game.Util;
 import game.boats.BoatType;
 import gui.panel.BattlePanel;
 
@@ -54,17 +55,18 @@ public class PlayerBoard extends Board {
 		gm.updateQuantities();
 	}
 
-	public boolean receiveAttack(int x, int y) {
-		if (!buttons[x][y].isEnabled() || x >= buttons.length || y >= buttons.length) {
-			return false;
+	public int receiveAttack(int x, int y) {
+		if (x >= buttons.length || y >= buttons.length || !buttons[x][y].isEnabled()) {
+			return Util.INVALIDATTACK;
 		} else {
 			buttons[x][y].setEnabled(false);
 			if (checkFinish()) {
 				parentPanel.getGm().finishGame(true);
-			} else {
-
 			}
-			return true;
+			if(buttons[x][y].hasBoat()) {
+				return Util.HIT;
+			}
+			return Util.MISS;
 		}
 	}
 
