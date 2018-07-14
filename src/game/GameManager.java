@@ -53,7 +53,7 @@ public final class GameManager {
 		return gameStarted;
 	}
 	
-	public boolean cpuAttack(int x, int y) {
+	public int cpuAttack(int x, int y) {
 		return playerBoard.receiveAttack(x, y);
 	}
 	
