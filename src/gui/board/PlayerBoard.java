@@ -56,6 +56,9 @@ public class PlayerBoard extends Board {
 	}
 
 	public int receiveAttack(int x, int y) {
+		if(!checkValidPosition(x, y)) {
+			return Util.INVALIDATTACK;
+		}
 		if (x >= buttons.length || y >= buttons.length || !buttons[x][y].isEnabled()) {
 			return Util.INVALIDATTACK;
 		} else {
@@ -68,6 +71,10 @@ public class PlayerBoard extends Board {
 			}
 			return Util.MISS;
 		}
+	}
+	
+	private boolean checkValidPosition(int x, int y) {
+		return !(x < 0 || x >= buttons.length || y < 0 || y >= buttons.length || !buttons[x][y].isEnabled());
 	}
 
 }
