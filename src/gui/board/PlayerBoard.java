@@ -40,18 +40,18 @@ public class PlayerBoard extends Board {
 			} else {
 				bt.quantity--;
 			}
-
+			if (bt.quantity == 0) {
+				gm.setSelectedBoatType(null);
+			}
 		} else {
 			while (!b.isHead()) {
 				b = buttons[b.getPosX()][b.getPosY() - 1];
 			}
 			removeButtonBoat(b);
 			b.getBoatType().quantity++;
+			gm.setSelectedBoatType(b.getBoatType());
 		}
 		gm.updateQuantities();
-		if(bt.quantity == 0) {
-			gm.setSelectedBoatType(null);			
-		}
 	}
 
 	public boolean receiveAttack(int x, int y) {
