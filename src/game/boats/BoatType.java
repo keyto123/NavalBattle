@@ -7,6 +7,7 @@ import game.Util;
 public class BoatType {
 	
 	private ImageIcon fullBoat;
+	//private ImageIcon destroyedBoat;
 	private ImageIcon boatParts[];
 	private ImageIcon boatDestroyedParts[];
 	
@@ -19,10 +20,12 @@ public class BoatType {
 		boatDestroyedParts = new ImageIcon[length];
 		quantity = 5 - length;
 
-		fullBoat = Util.getIcon(name + ".png");
+		fullBoat = Util.getIcon(name + "/normal.png");
+		// destroyedBoat = Util.getIcon(name + "/destroyed.png");
 
+		boatParts = Util.getImageParts(fullBoat, length);
+		
 		for (int i = 1; i <= length; i++) {
-			boatParts[i - 1] = Util.getIcon(name + "/" + i + ".png");
 			boatDestroyedParts[i - 1] = Util.getIcon(name + "/boat_explosion/" + i + ".png");
 		}
 	}
