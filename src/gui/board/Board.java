@@ -217,15 +217,15 @@ public abstract class Board extends BasePanel {
 	protected void useCrossPower(Point point) {
 
 		for (int i = -1; i < 2; i++) {
-			receiveAttack(new Attack(point.x + i, point.y + i, Power.NONE));
-			receiveAttack(new Attack(point.x - i, point.y + i, Power.NONE));
+			receiveAttack(new Attack(point.x + i, point.y + i));
+			receiveAttack(new Attack(point.x - i, point.y + i));
 		}
 	}
 
 	protected void useSquarePower(Point point) {
-		for (int i = -1; i < 2; i++) {
-			for (int j = -1; j < 2; j++) {
-				receiveAttack(new Attack(point.x + i, point.y + j, Power.NONE));
+		for (int i = point.x - 1; i < point.x + 2; i++) {
+			for (int j = point.y - 1; j < point.y + 2; j++) {
+				receiveAttack(new Attack(i, j));
 			}
 		}
 	}
