@@ -13,7 +13,7 @@ public class GameFrame extends JFrame {
 
 	public GameFrame() {
 		this.setTitle("Naval Battle");
-		this.setSize(800, 600);
+		this.setSize(650, 520);
 		
 		this.setLocationRelativeTo(null);
 		

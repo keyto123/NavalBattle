@@ -10,8 +10,8 @@ public class StartPanel extends GamePanel {
 	private JButton start = new JButton("Play");
 	
 	public StartPanel(GameFrame frame) {
-		super(800, 600, frame);
-		start.setBounds(350, 290, 100, 25);
+		super(frame);
+		start.setBounds(frame.getWidth() - 110, frame.getHeight() - 50, 100, 25);
 		start.addActionListener(e -> start_buttonAction());
 		this.add(start);
 	}

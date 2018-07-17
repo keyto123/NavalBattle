@@ -24,7 +24,7 @@ public class BattlePanel extends GamePanel {
 	}
 
 	public BattlePanel(GameFrame frame) {
-		super(800, 600, frame);
+		super(frame);
 		this.setBackgroundImage(null);
 		
 		initButtons();
@@ -34,12 +34,12 @@ public class BattlePanel extends GamePanel {
 
 	private void initButtons() {
 		// Finish
-		finish.setBounds(650, 550, 100, 25);
+		finish.setBounds(this.getWidth() - 110, this.getHeight() - 50, 100, 25);
 		finish.addActionListener(e -> finish_buttonAction());
 		this.add(finish);
 		
 		// Start
-		startGame.setBounds(540, 550, 100, 25);
+		startGame.setBounds(this.getWidth() - 220, this.getHeight() - 50, 100, 25);
 		startGame.addActionListener(e ->  {
 			gm.startGame();
 			startGame.setEnabled(false);

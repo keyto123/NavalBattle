@@ -9,10 +9,10 @@ public abstract class GamePanel extends BasePanel {
 
 	protected JButton quit = new JButton("Quit");
 
-	protected GamePanel(int width, int height, GameFrame frame) {
-		super(width, height, frame);
+	protected GamePanel(GameFrame frame) {
+		super(frame.getWidth(), frame.getHeight(), frame);
 
-		quit.setBounds(5, 550, 100, 25);
+		quit.setBounds(10, frame.getHeight() - 50, 100, 25);
 		quit.addActionListener(a -> System.exit(0));
 		this.add(quit);
 	}
