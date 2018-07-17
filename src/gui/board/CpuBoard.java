@@ -52,12 +52,9 @@ public class CpuBoard extends Board {
 	private void buttonAction(ActionEvent e) {
 		BoardButton b = (BoardButton) e.getSource();
 		Point point = new Point(b.getPosX(), b.getPosY());
+		
 		super.receiveAttack(new Attack(point, gm.getPlayerPower()));
 		gm.resetPlayerPower();
-		
-		if (checkExplodedBoat(point)) {
-			activePower = b.getBoatType().getPower();
-		}
 
 		if (checkFinish()) {
 			gm.finishGame(Util.PlayerWin);

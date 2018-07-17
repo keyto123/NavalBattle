@@ -18,7 +18,7 @@ public class Attack {
 	
 	// All overloaded constructors should lead to this
 	public Attack(Point point, Power power) {
-		this.point = point;
+		this.point = new Point(point);
 		this.power = power;
 	}
 	

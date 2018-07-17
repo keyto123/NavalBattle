@@ -191,6 +191,10 @@ public abstract class Board extends BasePanel {
 		int x = attack.point.x, y = attack.point.y;
 		buttons[x][y].setEnabled(false);
 		useActivePower(attack);
+		
+		if (checkExplodedBoat(attack.point)) {
+			activePower = buttons[x][y].getBoatType().getPower();
+		}
 
 		if (buttons[x][y].hasBoat()) {
 			return AttackStatus.HIT;

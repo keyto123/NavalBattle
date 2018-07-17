@@ -19,7 +19,7 @@ import gui.panel.BattlePanel;
 public class PlayerBoard extends Board {
 
 	private JLabel powerLabel = new JLabel("Power: NONE");
-	
+
 	private ActionListener listener = e -> {
 		if (!parentPanel.getGm().hasGameStarted()) {
 			buttonAction(e);
@@ -30,9 +30,9 @@ public class PlayerBoard extends Board {
 		super("PLAYER", panel);
 		this.setButtonsListener(listener);
 		parentPanel = panel;
-		
+
 		powerLabel.setBounds(100, 0, 200, 25);
-		
+
 		this.add(powerLabel);
 	}
 
@@ -45,19 +45,21 @@ public class PlayerBoard extends Board {
 			if (bt == null) {
 				return;
 			}
+
 			if (!this.setButtonBoat(b, bt, true) && bt != null) {
 				JOptionPane.showMessageDialog(this, "Invalid position");
 			} else {
 				bt.quantity--;
 			}
+
 			if (bt.quantity == 0) {
 				gm.setSelectedBoatType(null);
 			}
 		} else {
-			
+
 			Point head = getBoatHead(b.getPosX(), b.getPosY());
 			b = buttons[head.x][head.y];
-			
+
 			removeButtonBoat(b);
 			b.getBoatType().quantity++;
 			gm.setSelectedBoatType(b.getBoatType());
@@ -67,29 +69,25 @@ public class PlayerBoard extends Board {
 
 	public AttackStatus receiveCpuAttack(Attack attack) {
 		AttackStatus as = super.receiveAttack(attack);
-		if(as == AttackStatus.INVALIDATTACK) {
+		if (as == AttackStatus.INVALIDATTACK) {
 			return as;
 		}
-		
-		int x = attack.point.x, y = attack.point.y;
+
 		parentPanel.getGm().resetCpuPower();
-		
-		if(checkExplodedBoat(attack.point)) {
-			activePower = buttons[x][y].getBoatType().getPower();
-		}
+
 		updatePowerLabel();
 
 		if (checkFinish()) {
 			parentPanel.getGm().finishGame(Util.CpuWin);
 		}
-		
+
 		return as;
 	}
-	
+
 	public Power getActivePower() {
 		return activePower;
 	}
-	
+
 	private void updatePowerLabel() {
 		powerLabel.setText("Power: " + activePower.name());
 	}
