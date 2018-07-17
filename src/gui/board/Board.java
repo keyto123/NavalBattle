@@ -26,7 +26,7 @@ public abstract class Board extends BasePanel {
 
 	protected Board(String name, BattlePanel parentPanel) {
 		super(300, 300, null);
-		this.title.setBounds(150 - name.length() * 8, 0, 100, 25);
+		this.title.setBounds(0, 0, 100, 25);
 		this.title.setText(name);
 		this.add(this.title);
 		this.parentPanel = parentPanel;

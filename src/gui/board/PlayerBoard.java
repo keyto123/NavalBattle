@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import game.Attack;
@@ -17,6 +18,8 @@ import gui.panel.BattlePanel;
 @SuppressWarnings("serial")
 public class PlayerBoard extends Board {
 
+	private JLabel powerLabel = new JLabel("Power: NONE");
+	
 	private ActionListener listener = e -> {
 		if (!parentPanel.getGm().hasGameStarted()) {
 			buttonAction(e);
@@ -27,6 +30,10 @@ public class PlayerBoard extends Board {
 		super("PLAYER", panel);
 		this.setButtonsListener(listener);
 		parentPanel = panel;
+		
+		powerLabel.setBounds(100, 0, 200, 25);
+		
+		this.add(powerLabel);
 	}
 
 	private void buttonAction(ActionEvent e) {
@@ -70,6 +77,7 @@ public class PlayerBoard extends Board {
 		if(checkExplodedBoat(attack.point)) {
 			activePower = buttons[x][y].getBoatType().getPower();
 		}
+		updatePowerLabel();
 
 		if (checkFinish()) {
 			parentPanel.getGm().finishGame(Util.CpuWin);
@@ -80,6 +88,10 @@ public class PlayerBoard extends Board {
 	
 	public Power getActivePower() {
 		return activePower;
+	}
+	
+	private void updatePowerLabel() {
+		powerLabel.setText("Power: " + activePower.name());
 	}
 
 }
