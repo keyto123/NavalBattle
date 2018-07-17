@@ -31,7 +31,7 @@ public class PlayerBoard extends Board {
 		this.setButtonsListener(listener);
 		parentPanel = panel;
 
-		powerLabel.setBounds(100, 0, 200, 25);
+		powerLabel.setBounds(60, 0, 200, 25);
 
 		this.add(powerLabel);
 	}
@@ -78,7 +78,7 @@ public class PlayerBoard extends Board {
 		updatePowerLabel();
 
 		if (checkFinish()) {
-			parentPanel.getGm().finishGame(Util.CpuWin);
+			parentPanel.getGm().finishGame(Util.cpuWin);
 		}
 
 		return as;

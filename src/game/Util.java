@@ -14,15 +14,18 @@ public class Util {
 
 	public static final int minButtonX = 5;
 	public static final int minButtonY = 40;
+	public static final int commonButtonWidth = 100;
 	public static final int buttonWidth = 25;
 	public static final int buttonHeight = 25;
-	public static final int boardSize = 10;
 	
-	public static final boolean PlayerWin = true;
-	public static final boolean CpuWin = false;
+	// You might not want to use less than 6
+	public static int boardSize = 6;
+	
+	public static final boolean playerWin = true;
+	public static final boolean cpuWin = false;
 	
 	// actual max size of a boat
-	public static final int BOATLENGTHLIMIT = 4;
+	public static int boatLengthLimit = 3;
 
 	public static final ImageIcon waterIcon = Util.getIcon("water.jpg");
 	public static final ImageIcon disabledWaterIcon = Util.getIcon("disabledWater.jpg");

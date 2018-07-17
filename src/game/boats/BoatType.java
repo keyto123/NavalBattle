@@ -21,7 +21,7 @@ public class BoatType {
 		boatParts = new ImageIcon[length];
 		boatDestroyedParts = new ImageIcon[length];
 		
-		quantity = (Util.BOATLENGTHLIMIT - length) + 1;
+		quantity = (Util.boatLengthLimit - length) + 1;
 
 		this.power = type.getPower();
 		

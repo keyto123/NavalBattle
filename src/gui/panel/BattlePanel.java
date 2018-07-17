@@ -18,7 +18,7 @@ public class BattlePanel extends GamePanel {
 	private CpuBoard cpuPanel = new CpuBoard(this);
 	private BoatPanel boatPanel = new BoatPanel(this);
 	private GameManager gm = new GameManager(playerPanel, cpuPanel, boatPanel);
-	
+
 	public GameManager getGm() {
 		return gm;
 	}
@@ -26,7 +26,7 @@ public class BattlePanel extends GamePanel {
 	public BattlePanel(GameFrame frame) {
 		super(frame);
 		this.setBackgroundImage(null);
-		
+
 		initButtons();
 		initLabels();
 		initPanels();
@@ -34,13 +34,13 @@ public class BattlePanel extends GamePanel {
 
 	private void initButtons() {
 		// Finish
-		finish.setBounds(this.getWidth() - 110, this.getHeight() - 50, 100, 25);
+		finish.setBounds(this.getWidth() - 110, this.getHeight() - 50, Util.commonButtonWidth, Util.buttonHeight);
 		finish.addActionListener(e -> finish_buttonAction());
 		this.add(finish);
-		
+
 		// Start
-		startGame.setBounds(this.getWidth() - 220, this.getHeight() - 50, 100, 25);
-		startGame.addActionListener(e ->  {
+		startGame.setBounds(this.getWidth() - 220, this.getHeight() - 50, Util.commonButtonWidth, Util.buttonHeight);
+		startGame.addActionListener(e -> {
 			gm.startGame();
 			startGame.setEnabled(false);
 		});
@@ -52,15 +52,15 @@ public class BattlePanel extends GamePanel {
 	}
 
 	private void initPanels() {
-		playerPanel.setBounds(Util.minButtonX + 20, Util.minButtonY, playerPanel.getWidth(),
-				playerPanel.getHeight());
+		playerPanel.setBounds(Util.minButtonX + 20, 10, playerPanel.getWidth(), playerPanel.getHeight());
 		this.add(playerPanel);
 
-		cpuPanel.setBounds(Util.minButtonX + playerPanel.getWidth() + 25, Util.minButtonY, cpuPanel.getWidth(),
+		cpuPanel.setBounds(Util.minButtonX + playerPanel.getWidth() + 25, 10, cpuPanel.getWidth(),
 				cpuPanel.getHeight());
 		this.add(cpuPanel);
-		
-		boatPanel.setBounds(Util.minButtonX, playerPanel.getHeight() + 5 + Util.minButtonY, boatPanel.getWidth(), boatPanel.getHeight());
+
+		boatPanel.setBounds(Util.minButtonX, playerPanel.getHeight() + 5, boatPanel.getWidth(),
+				boatPanel.getHeight());
 		this.add(boatPanel);
 	}
 

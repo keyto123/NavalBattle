@@ -42,8 +42,8 @@ public class CpuBoard extends Board {
 		for (int i = 0; i < storage.getLength(); i++) {
 			for (int j = 0; j < storage.getBoatType(i).quantity; j++) {
 				do {
-					x = rand.nextInt(10);
-					y = rand.nextInt(10);
+					x = rand.nextInt(Util.boardSize);
+					y = rand.nextInt(Util.boardSize);
 				} while (!this.setButtonBoat(buttons[x][y], storage.getBoatType(i), false));
 			}
 		}
@@ -57,7 +57,7 @@ public class CpuBoard extends Board {
 		gm.resetPlayerPower();
 
 		if (checkFinish()) {
-			gm.finishGame(Util.PlayerWin);
+			gm.finishGame(Util.playerWin);
 		} else {
 			cpuAttack();
 		}
@@ -125,8 +125,6 @@ public class CpuBoard extends Board {
 			// shouldn't waste a movement, so random attack
 			if (result == AttackStatus.INVALIDATTACK) {
 				randomAttack();
-			} else {
-				useActivePower(attack);
 			}
 
 		}

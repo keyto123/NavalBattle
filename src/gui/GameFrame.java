@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.JFrame;
 
+import game.Util;
 import gui.panel.BattlePanel;
 import gui.panel.StartPanel;
 
@@ -13,7 +14,7 @@ public class GameFrame extends JFrame {
 
 	public GameFrame() {
 		this.setTitle("Naval Battle");
-		this.setSize(650, 520);
+		this.setSize(25 + Util.boardSize * 60, 170 + Util.boardSize * 30);
 		
 		this.setLocationRelativeTo(null);
 		

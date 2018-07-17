@@ -25,7 +25,7 @@ public abstract class Board extends BasePanel {
 	private JLabel title = new JLabel();
 
 	protected Board(String name, BattlePanel parentPanel) {
-		super(300, 300, null);
+		super(Util.boardSize * 30, Util.boardSize * 30 + 30, null);
 		this.title.setBounds(0, 0, 100, 25);
 		this.title.setText(name);
 		this.add(this.title);

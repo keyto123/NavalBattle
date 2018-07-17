@@ -22,11 +22,12 @@ public class BoatPanel extends BasePanel {
 	private BoatStorage storage = new BoatStorage();
 
 	public BoatPanel(BattlePanel panel) {
-		super(800, 200, null);
+		super(panel.getWidth(), 100, null);
 
 		parentPanel = panel;
 
-		name.setBounds(350, 0, 100, 25);
+		int namePosX = this.getWidth() / 2 - 30;
+		name.setBounds(namePosX, 0, 100, 25);
 		this.add(name);
 
 		boats = new BoatButton[storage.getLength()];
@@ -39,12 +40,12 @@ public class BoatPanel extends BasePanel {
 
 	private ActionListener listener = e -> {
 		GameManager gm = parentPanel.getGm();
-		
-		if(!gm.hasGameStarted()) {
+
+		if (!gm.hasGameStarted()) {
 			boatButton_Function(e);
 		}
 	};
-	
+
 	private void boatButton_Function(ActionEvent e) {
 		BoatButton b = (BoatButton) e.getSource();
 		BoatType bt = b.getBoatType();
@@ -62,7 +63,6 @@ public class BoatPanel extends BasePanel {
 	}
 
 	private void initButtons() {
-		Rectangle r = new Rectangle();
 
 		// Init Boats and Labels
 		for (int i = 0; i < boats.length; i++) {
@@ -70,21 +70,51 @@ public class BoatPanel extends BasePanel {
 			boatQuantities[i] = new JLabel();
 		}
 
-		for (int i = 0; i < boats.length; ) {
+		boatButtonsInit2();
+	}
+
+	@SuppressWarnings("unused")
+	private void boatButtonsInit() {
+		Rectangle r = new Rectangle();
+		for (int i = 0; i < boats.length;) {
 			for (int j = 0; j < 2 && i < boats.length; j++, i++) {
 				BoatType bt = boats[i].getBoatType();
 				r = new Rectangle(100 + (i / 2 * 100), 25 + (j * 30), boats[i].getWidth(), boats[i].getHeight());
+
 				boats[i].setBounds(r);
 				boats[i].setBorder(null);
 				boats[i].setBackground(Color.GRAY);
 				boats[i].addActionListener(listener);
 				this.add(boats[i]);
-				
+
 				r = new Rectangle(r.x - 15, r.y, 45, 25);
 				boatQuantities[i].setBounds(r);
 				boatQuantities[i].setText(bt.quantity + "");
 				this.add(boatQuantities[i]);
 			}
+		}
+	}
+
+	private void boatButtonsInit2() {
+		Rectangle r = new Rectangle();
+		for (int i = 0; i < boats.length; i++) {
+			BoatType bt = boats[i].getBoatType();
+
+			r = new Rectangle(
+					25 + i * 25 + (boats[i].getWidth() * 5 / 11) * i, 25,
+					boats[i].getWidth(), boats[i].getHeight()
+			);
+			boats[i].setBounds(r);
+			boats[i].setBorder(null);
+			boats[i].setBackground(Color.GRAY);
+			boats[i].addActionListener(listener);
+			this.add(boats[i]);
+
+			r = new Rectangle(r.x + (boats[i].getWidth() / 2), r.y + 25, 30, 25);
+			boatQuantities[i].setBounds(r);
+			boatQuantities[i].setText(bt.quantity + "");
+			this.add(boatQuantities[i]);
+
 		}
 	}
 }

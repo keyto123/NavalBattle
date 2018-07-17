@@ -36,7 +36,7 @@ public final class GameManager {
 	}
 
 	public void finishGame(boolean winner) {
-		if (Util.PlayerWin == winner) {
+		if (Util.playerWin == winner) {
 			JOptionPane.showMessageDialog(playerBoard, "You win!");
 		} else {
 			JOptionPane.showMessageDialog(cpuBoard, "You Lose!");
