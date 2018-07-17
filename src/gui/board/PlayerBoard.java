@@ -58,8 +58,7 @@ public class PlayerBoard extends Board {
 		gm.updateQuantities();
 	}
 
-	@Override
-	public AttackStatus receiveAttack(Attack attack) {
+	public AttackStatus receiveCpuAttack(Attack attack) {
 		AttackStatus as = super.receiveAttack(attack);
 		if(as == AttackStatus.INVALIDATTACK) {
 			return as;

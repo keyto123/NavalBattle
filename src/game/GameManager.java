@@ -55,7 +55,7 @@ public final class GameManager {
 	}
 
 	public AttackStatus cpuAttack(Attack attack) {
-		return playerBoard.receiveAttack(attack);
+		return playerBoard.receiveCpuAttack(attack);
 	}
 	
 	public Power getPlayerPower() {
