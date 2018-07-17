@@ -17,10 +17,12 @@ public class Util {
 	public static final int buttonWidth = 25;
 	public static final int buttonHeight = 25;
 	public static final int boardSize = 10;
-
-	public static final int INVALIDATTACK = -1;
-	public static final int MISS = 0;
-	public static final int HIT = 1;
+	
+	public static final boolean PlayerWin = true;
+	public static final boolean CpuWin = false;
+	
+	// actual max size of a boat
+	public static final int BOATLENGTHLIMIT = 4;
 
 	public static final ImageIcon waterIcon = Util.getIcon("water.jpg");
 	public static final ImageIcon disabledWaterIcon = Util.getIcon("disabledWater.jpg");

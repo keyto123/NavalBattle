@@ -1,27 +1,35 @@
 package gui.board;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import game.Attack;
+import game.AttackStatus;
 import game.Util;
 import game.boats.BoatType;
+import game.boats.Power;
 import gui.panel.BasePanel;
+import gui.panel.BattlePanel;
 
 @SuppressWarnings("serial")
 public abstract class Board extends BasePanel {
-	
+
 	protected BoardButton buttons[][] = new BoardButton[Util.boardSize][Util.boardSize];
+	protected Power activePower = Power.NONE;
+	protected BattlePanel parentPanel;
 
 	private JLabel title = new JLabel();
 
-	protected Board(String name) {
+	protected Board(String name, BattlePanel parentPanel) {
 		super(300, 300, null);
 		this.title.setBounds(150 - name.length() * 8, 0, 100, 25);
 		this.title.setText(name);
 		this.add(this.title);
+		this.parentPanel = parentPanel;
 
 		this.initButtons();
 	}
@@ -83,13 +91,13 @@ public abstract class Board extends BasePanel {
 
 		buttons[x][y].setHead(true);
 		for (int i = 0; i < parts.length; i++) {
-			if(player) {
+			if (player) {
 				buttons[x][y + i].setIcon(parts[i]);
 			}
 			buttons[x][y + i].setDisabledIcon(destroyedParts[i]);
 			buttons[x][y + i].setHasBoat(true);
+			buttons[x][y + i].setBoatType(bt);
 		}
-		b.setBoatType(bt);
 
 		return true;
 	}
@@ -125,7 +133,7 @@ public abstract class Board extends BasePanel {
 		}
 		return true;
 	}
-	
+
 	protected boolean checkFinish() {
 		for (int i = 0; i < buttons.length; i++) {
 			for (int j = 0; j < buttons[0].length; j++) {
@@ -135,5 +143,94 @@ public abstract class Board extends BasePanel {
 			}
 		}
 		return true;
+	}
+
+	protected boolean checkValidPosition(int x, int y) {
+		return !(x < 0 || x >= buttons.length || y < 0 || y >= buttons.length || !buttons[x][y].isEnabled());
+	}
+
+	protected boolean checkValidPosition(Point point) {
+		return this.checkValidPosition(point.x, point.y);
+	}
+
+	protected Point getBoatHead(Point point) {
+		return getBoatHead(point.x, point.y);
+	}
+
+	protected Point getBoatHead(int x, int y) {
+		if (!buttons[x][y].hasBoat()) {
+			return null;
+		}
+		while (!buttons[x][y].isHead()) {
+			y--;
+		}
+		return new Point(x, y);
+	}
+
+	protected boolean checkExplodedBoat(Point point) {
+		Point head = getBoatHead(point);
+		if (head == null) {
+			return false;
+		}
+
+		int length = buttons[head.x][head.y].getBoatType().getLength();
+
+		for (int i = 0; i < length; i++) {
+			if (buttons[head.x][head.y + i].isEnabled()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	protected AttackStatus receiveAttack(Attack attack) {
+		if (!checkValidPosition(attack.point)) {
+			return AttackStatus.INVALIDATTACK;
+		}
+
+		int x = attack.point.x, y = attack.point.y;
+		buttons[x][y].setEnabled(false);
+		useActivePower(attack);
+
+		if (buttons[x][y].hasBoat()) {
+			return AttackStatus.HIT;
+		} else {
+			return AttackStatus.MISS;
+		}
+	}
+
+	protected void useActivePower(Attack attack) {
+		switch (attack.power) {
+		case NONE:
+			return;
+
+		case CROSS:
+			useCrossPower(attack.point);
+			break;
+
+		case SQUARE:
+			useSquarePower(attack.point);
+			break;
+		}
+	}
+
+	protected void useCrossPower(Point point) {
+
+		for (int i = -1; i < 2; i++) {
+			receiveAttack(new Attack(point.x + i, point.y + i, Power.NONE));
+			receiveAttack(new Attack(point.x - i, point.y + i, Power.NONE));
+		}
+	}
+
+	protected void useSquarePower(Point point) {
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				receiveAttack(new Attack(point.x + i, point.y + j, Power.NONE));
+			}
+		}
+	}
+
+	public void resetPower() {
+		this.activePower = Power.NONE;
 	}
 }

@@ -3,6 +3,7 @@ package game;
 import javax.swing.JOptionPane;
 
 import game.boats.BoatType;
+import game.boats.Power;
 import gui.board.CpuBoard;
 import gui.board.PlayerBoard;
 import gui.panel.BoatPanel;
@@ -14,7 +15,7 @@ public final class GameManager {
 	private CpuBoard cpuBoard;
 	private BoatType selectedBoat;
 	private boolean gameStarted = false;
-	
+
 	public GameManager(PlayerBoard playerBoard, CpuBoard cpuBoard, BoatPanel boatPanel) {
 		this.playerBoard = playerBoard;
 		this.cpuBoard = cpuBoard;
@@ -24,14 +25,18 @@ public final class GameManager {
 	public void setSelectedBoatType(BoatType boatType) {
 		this.selectedBoat = boatType;
 	}
-	
+
+	public BoatType getSelectedBoatType() {
+		return selectedBoat;
+	}
+
 	public void startGame() {
 		gameStarted = true;
 		cpuBoard.initBoats();
 	}
-	
-	public void finishGame(boolean player) {
-		if(!player) {
+
+	public void finishGame(boolean winner) {
+		if (Util.PlayerWin == winner) {
 			JOptionPane.showMessageDialog(playerBoard, "You win!");
 		} else {
 			JOptionPane.showMessageDialog(cpuBoard, "You Lose!");
@@ -40,24 +45,28 @@ public final class GameManager {
 		cpuBoard.disableButtons();
 		playerBoard.disableButtons();
 	}
-	
-	public BoatType getSelectedBoatType() {
-		return selectedBoat;
-	}
-	
+
 	public void updateQuantities() {
 		boatPanel.updateQuantities();
 	}
-	
+
 	public boolean hasGameStarted() {
 		return gameStarted;
 	}
-	
-	public int cpuAttack(int x, int y) {
-		return playerBoard.receiveAttack(x, y);
+
+	public AttackStatus cpuAttack(Attack attack) {
+		return playerBoard.receiveAttack(attack);
 	}
 	
-	public void setAttackSuccess() {
-		
+	public Power getPlayerPower() {
+		return playerBoard.getActivePower();
+	}
+
+	public void resetCpuPower() {
+		cpuBoard.resetPower();
+	}
+	
+	public void resetPlayerPower() {
+		playerBoard.resetPower();
 	}
 }

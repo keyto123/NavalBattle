@@ -1,19 +1,21 @@
 package gui.board;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
+import game.Attack;
+import game.AttackStatus;
 import game.GameManager;
 import game.Util;
 import game.boats.BoatType;
+import game.boats.Power;
 import gui.panel.BattlePanel;
 
 @SuppressWarnings("serial")
 public class PlayerBoard extends Board {
-
-	private BattlePanel parentPanel;
 
 	private ActionListener listener = e -> {
 		if (!parentPanel.getGm().hasGameStarted()) {
@@ -22,7 +24,7 @@ public class PlayerBoard extends Board {
 	};
 
 	public PlayerBoard(BattlePanel panel) {
-		super("PLAYER");
+		super("PLAYER", panel);
 		this.setButtonsListener(listener);
 		parentPanel = panel;
 	}
@@ -45,9 +47,10 @@ public class PlayerBoard extends Board {
 				gm.setSelectedBoatType(null);
 			}
 		} else {
-			while (!b.isHead()) {
-				b = buttons[b.getPosX()][b.getPosY() - 1];
-			}
+			
+			Point head = getBoatHead(b.getPosX(), b.getPosY());
+			b = buttons[head.x][head.y];
+			
 			removeButtonBoat(b);
 			b.getBoatType().quantity++;
 			gm.setSelectedBoatType(b.getBoatType());
@@ -55,26 +58,29 @@ public class PlayerBoard extends Board {
 		gm.updateQuantities();
 	}
 
-	public int receiveAttack(int x, int y) {
-		if(!checkValidPosition(x, y)) {
-			return Util.INVALIDATTACK;
+	@Override
+	public AttackStatus receiveAttack(Attack attack) {
+		AttackStatus as = super.receiveAttack(attack);
+		if(as == AttackStatus.INVALIDATTACK) {
+			return as;
 		}
-		if (x >= buttons.length || y >= buttons.length || !buttons[x][y].isEnabled()) {
-			return Util.INVALIDATTACK;
-		} else {
-			buttons[x][y].setEnabled(false);
-			if (checkFinish()) {
-				parentPanel.getGm().finishGame(true);
-			}
-			if(buttons[x][y].hasBoat()) {
-				return Util.HIT;
-			}
-			return Util.MISS;
+		
+		int x = attack.point.x, y = attack.point.y;
+		parentPanel.getGm().resetCpuPower();
+		
+		if(checkExplodedBoat(attack.point)) {
+			activePower = buttons[x][y].getBoatType().getPower();
 		}
+
+		if (checkFinish()) {
+			parentPanel.getGm().finishGame(Util.CpuWin);
+		}
+		
+		return as;
 	}
 	
-	private boolean checkValidPosition(int x, int y) {
-		return !(x < 0 || x >= buttons.length || y < 0 || y >= buttons.length || !buttons[x][y].isEnabled());
+	public Power getActivePower() {
+		return activePower;
 	}
 
 }

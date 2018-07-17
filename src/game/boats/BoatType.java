@@ -13,15 +13,20 @@ public class BoatType {
 	
 	private int length;
 	public int quantity;
+	
+	private Power power;
 
-	public BoatType(String name, int length) {
-		this.length = length;
+	public BoatType(BoatTypes type) {
+		this.length = type.getLength();
 		boatParts = new ImageIcon[length];
 		boatDestroyedParts = new ImageIcon[length];
-		quantity = 5 - length;
+		
+		quantity = (Util.BOATLENGTHLIMIT - length) + 1;
 
-		fullBoat = Util.getIcon(name + "/normal.png");
-		destroyedBoat = Util.getIcon(name + "/destroyed.png");
+		this.power = type.getPower();
+		
+		fullBoat = Util.getIcon(type.getName()+ "/normal.png");
+		destroyedBoat = Util.getIcon(type.getName() + "/destroyed.png");
 
 		boatParts = Util.getImageParts(fullBoat, length);
 		boatDestroyedParts = Util.getImageParts(destroyedBoat, length);
@@ -41,5 +46,9 @@ public class BoatType {
 
 	public int getLength() {
 		return length;
+	}
+	
+	public Power getPower() {
+		return power;
 	}
 }

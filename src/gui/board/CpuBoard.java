@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
+import game.Attack;
+import game.AttackStatus;
 import game.GameManager;
 import game.Util;
 import game.boats.BoatStorage;
@@ -13,10 +15,8 @@ import gui.panel.BattlePanel;
 @SuppressWarnings("serial")
 public class CpuBoard extends Board {
 
-	private BattlePanel parentPanel;
-
-	private Point firstHit = null;
-	private Point lastAttackPoint = null;
+	private Point firstHit = new Point(0, 0);
+	private Point lastAttackPoint = new Point(0, 0);
 	private boolean useSmartAttack = false;
 	private boolean smartAttackFail = false;
 
@@ -31,7 +31,7 @@ public class CpuBoard extends Board {
 	};
 
 	public CpuBoard(BattlePanel panel) {
-		super("CPU");
+		super("CPU", panel);
 		this.setButtonsListener(listener);
 		parentPanel = panel;
 	}
@@ -51,17 +51,22 @@ public class CpuBoard extends Board {
 
 	private void buttonAction(ActionEvent e) {
 		BoardButton b = (BoardButton) e.getSource();
-		b.setEnabled(false);
+		Point point = new Point(b.getPosX(), b.getPosY());
+		super.receiveAttack(new Attack(point, gm.getPlayerPower()));
+		gm.resetPlayerPower();
+		
+		if (checkExplodedBoat(point)) {
+			activePower = b.getBoatType().getPower();
+		}
 
 		if (checkFinish()) {
-			gm.finishGame(false);
+			gm.finishGame(Util.PlayerWin);
 		} else {
 			cpuAttack();
 		}
 
 	}
 
-	// TODO: use logic
 	private void cpuAttack() {
 
 		if (useSmartAttack) {
@@ -73,50 +78,58 @@ public class CpuBoard extends Board {
 	}
 
 	private void randomAttack() {
-		int x, y, result;
+		AttackStatus result = null;
+		Attack attack = new Attack(0, 0, activePower);
 		do {
-			x = rand.nextInt(10);
-			y = rand.nextInt(10);
-			result = gm.cpuAttack(x, y);
-		} while (result == Util.INVALIDATTACK);
+			attack.point.x = rand.nextInt(10);
+			attack.point.y = rand.nextInt(10);
+			result = gm.cpuAttack(attack);
+		} while (result == AttackStatus.INVALIDATTACK);
 
-		if (result == Util.HIT) {
+		if (result == AttackStatus.HIT) {
 			useSmartAttack = true;
-			firstHit = new Point(x, y);
-			lastAttackPoint = new Point(firstHit);
+			firstHit.setLocation(attack.point);
+			lastAttackPoint.setLocation(firstHit);
 		}
 	}
 
 	private void smartAttack() {
-		int result;
+		AttackStatus result;
 		if (smartAttackFail == false) {
-			lastAttackPoint.setLocation(lastAttackPoint.x, lastAttackPoint.y + 1);
-			result = gm.cpuAttack(lastAttackPoint.x, lastAttackPoint.y);
+			Point nextAttackPoint = new Point(lastAttackPoint.x, lastAttackPoint.y + 1);
 
-			if (result == Util.INVALIDATTACK || result == Util.MISS) {
+			Attack attack = new Attack(nextAttackPoint, activePower);
+			result = gm.cpuAttack(attack);
+
+			if (result == AttackStatus.INVALIDATTACK || result == AttackStatus.MISS) {
 				smartAttackFail = true;
-				lastAttackPoint.setLocation(firstHit.x, firstHit.y);
+				lastAttackPoint.setLocation(firstHit);
+			} else {
+				lastAttackPoint.setLocation(nextAttackPoint);
 			}
-			
-			if (result == Util.INVALIDATTACK) {
+
+			if (result == AttackStatus.INVALIDATTACK) {
 				smartAttack();
 			}
-			
+
 		} else {
-			lastAttackPoint.setLocation(lastAttackPoint.x, lastAttackPoint.y - 1);
-			result = gm.cpuAttack(lastAttackPoint.x, lastAttackPoint.y);
+			Point nextAttackPoint = new Point(lastAttackPoint.x, lastAttackPoint.y - 1);
+			Attack attack = new Attack(nextAttackPoint, activePower);
+			result = gm.cpuAttack(attack);
 
 			// Reset stuff since we gonna use random attack again
-			if (result == Util.INVALIDATTACK || result == Util.MISS) {
+			if (result == AttackStatus.INVALIDATTACK || result == AttackStatus.MISS) {
 				useSmartAttack = false;
-				firstHit = null;
-				lastAttackPoint = null;
 				smartAttackFail = false;
+			} else {
+				lastAttackPoint.setLocation(nextAttackPoint);
 			}
 
 			// shouldn't waste a movement, so random attack
-			if (result == Util.INVALIDATTACK) {
+			if (result == AttackStatus.INVALIDATTACK) {
 				randomAttack();
+			} else {
+				useActivePower(attack);
 			}
 
 		}
