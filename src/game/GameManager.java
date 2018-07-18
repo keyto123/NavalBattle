@@ -71,6 +71,10 @@ public final class GameManager {
 	public boolean cpuPossibleDiagonalMovement(Point p) {
 		return playerBoard.checkPossibleDiagonalAttack(p);
 	}
+	
+	public boolean cpuAttackBoat(Point p) {
+		return playerBoard.hasBoat(p.x, p.y);
+	}
 
 	public void resetCpuPower() {
 		cpuBoard.resetPower();

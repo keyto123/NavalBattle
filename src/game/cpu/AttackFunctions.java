@@ -5,12 +5,13 @@ import java.util.Random;
 
 import game.Attack;
 import game.AttackStatus;
+import game.Difficulty;
 import game.GameManager;
 import game.Util;
 import game.boats.Power;
 
 public class AttackFunctions {
-	
+
 	private Point firstHit = new Point(0, 0);
 	private Point lastAttackPoint = new Point(0, 0);
 	private boolean useSmartAttack = false;
@@ -19,46 +20,46 @@ public class AttackFunctions {
 	private GameManager gm;
 	private Power activePower;
 	private Random rand = new Random();
-	
+
 	public AttackFunctions(GameManager gm) {
 		this.gm = gm;
 	}
-	
+
 	public void cpuAttack(Power power) {
 		this.activePower = power;
-		
-		switch(Util.gameDifficulty) {
+
+		switch (Util.gameDifficulty) {
 		case EASY:
 			randomAttack();
 			break;
-			
+
 		case MEDIUM:
-			if(useSmartAttack) {
+			if (useSmartAttack) {
 				smartAttack();
 			} else {
 				randomAttack();
 			}
 			break;
-			
+
 		case HARD:
 			if (useSmartAttack) {
 				smartAttack();
 			} else {
 				Point point = gm.cpuSmartAttackPoint();
-				if(point == null) {
-					randomAttack();				
+				if (point == null) {
+					randomAttack();
 				} else {
 					smartAttack2(point);
 				}
 			}
 			break;
-		
+
 		case VERYHARD:
-			if(useSmartAttack) {
+			if (useSmartAttack) {
 				smartAttack();
 			} else {
 				Point point = gm.cpuSmartAttackPoint();
-				if(point == null) {
+				if (point == null) {
 					guidedAttack();
 				} else {
 					smartAttack2(point);
@@ -68,7 +69,7 @@ public class AttackFunctions {
 		}
 		firstAttack = false;
 	}
-	
+
 	private void randomAttack() {
 		AttackStatus result = null;
 		Attack attack = new Attack(0, 0, activePower);
@@ -84,19 +85,19 @@ public class AttackFunctions {
 		}
 		lastAttackPoint.setLocation(attack.point);
 	}
-	
+
 	private void guidedAttack() {
 		int direction;
 		Diagonal diagonal;
 		Attack attack;
 		AttackStatus status;
 		Point nextAttackPoint = new Point(0, 0);
-		
-		if(firstAttack || !gm.cpuPossibleDiagonalMovement(lastAttackPoint)) {
+
+		if (firstAttack || !gm.cpuPossibleDiagonalMovement(lastAttackPoint)) {
 			randomAttack();
 			return;
 		}
-		
+
 		do {
 			direction = rand.nextInt(4);
 			diagonal = Diagonal.values[direction];
@@ -104,12 +105,12 @@ public class AttackFunctions {
 			int nextY = lastAttackPoint.y + diagonal.y;
 			nextAttackPoint.setLocation(nextX, nextY);
 			attack = new Attack(nextAttackPoint, activePower);
-		} while((status = gm.cpuAttack(attack)) == AttackStatus.INVALIDATTACK);
-		
-		switch(status) {
+		} while ((status = gm.cpuAttack(attack)) == AttackStatus.INVALIDATTACK);
+
+		switch (status) {
 		case INVALIDATTACK:
 			break;
-			
+
 		case HIT:
 			useSmartAttack = true;
 			firstHit.setLocation(attack.point);
@@ -123,8 +124,15 @@ public class AttackFunctions {
 		AttackStatus result;
 		if (smartAttackFail == false) {
 			Point nextAttackPoint = new Point(lastAttackPoint.x, lastAttackPoint.y + 1);
-
 			Attack attack = new Attack(nextAttackPoint, activePower);
+
+			if (Util.gameDifficulty == Difficulty.VERYHARD && !gm.cpuAttackBoat(attack.point)) {
+				smartAttackFail = true;
+				lastAttackPoint.setLocation(firstHit);
+				smartAttack();
+				return;
+			}
+
 			result = gm.cpuAttack(attack);
 
 			if (result == AttackStatus.INVALIDATTACK || result == AttackStatus.MISS) {
@@ -141,6 +149,14 @@ public class AttackFunctions {
 		} else {
 			Point nextAttackPoint = new Point(lastAttackPoint.x, lastAttackPoint.y - 1);
 			Attack attack = new Attack(nextAttackPoint, activePower);
+
+			if (Util.gameDifficulty == Difficulty.VERYHARD && !gm.cpuAttackBoat(attack.point)) {
+				useSmartAttack = false;
+				smartAttackFail = false;
+				cpuAttack(activePower);
+				return;
+			}
+
 			result = gm.cpuAttack(attack);
 
 			// Reset stuff since we gonna use random attack again
@@ -158,7 +174,7 @@ public class AttackFunctions {
 
 		}
 	}
-	
+
 	private void smartAttack2(Point point) {
 		firstHit.setLocation(point);
 		lastAttackPoint.setLocation(point);

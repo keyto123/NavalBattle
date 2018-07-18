@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 
 import game.Attack;
 import game.AttackStatus;
+import game.Difficulty;
 import game.Util;
 import game.boats.BoatType;
 import game.boats.Power;
@@ -73,6 +74,9 @@ public abstract class Board extends BasePanel {
 	}
 
 	public boolean hasBoat(int x, int y) {
+		if(!checkValidPosition(x, y)) {
+			return false;
+		}
 		return buttons[x][y].hasBoat();
 	}
 
@@ -243,6 +247,14 @@ public abstract class Board extends BasePanel {
 		for (int i = 0; i < buttons.length; i++) {
 			for (int j = 0; j < buttons[0].length; j++) {
 				p.setLocation(i, j);
+				
+				if(Util.gameDifficulty == Difficulty.VERYHARD) {
+					if(checkPossibleSmartAttackPoint2(p)) {
+						return p;
+					}
+					break;
+				}
+				
 				if (checkPossibleSmartAttackPoint(p)) {
 					return p;
 				}
@@ -283,10 +295,29 @@ public abstract class Board extends BasePanel {
 	private boolean checkPossibleSmartAttackPoint(Point point) {
 
 		if (buttons[point.x][point.y].hasBoat() && !buttons[point.x][point.y].isEnabled()) {
+			
 			if (point.y > 0 && buttons[point.x][point.y - 1].isEnabled()) {
 				return true;
 			}
+			
 			if (point.y < (Util.boardSize - 1) && buttons[point.x][point.y + 1].isEnabled()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean checkPossibleSmartAttackPoint2(Point point) {
+		
+		int x = point.x, y = point.y;
+		
+		if (buttons[x][y].hasBoat()  && !buttons[x][y].isEnabled()) {
+			
+			if (y > 0 && buttons[x][y - 1].isEnabled() && buttons[x][y - 1].hasBoat()) {
+				return true;
+			}
+			
+			if (y < (Util.boardSize - 1) && buttons[x][y + 1].isEnabled() && buttons[x][y + 1].hasBoat()) {
 				return true;
 			}
 		}
