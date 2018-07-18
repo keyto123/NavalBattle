@@ -5,6 +5,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import game.Difficulty;
 import game.Util;
 import gui.GameFrame;
 
@@ -12,64 +13,97 @@ import gui.GameFrame;
 public class StartPanel extends GamePanel {
 
 	private JButton start = new JButton("Play");
+	
 	private JComboBox<Integer> boardSizeBox;
 	private JComboBox<Integer> boatQuantityBox;
+	private JComboBox<Difficulty> difficultyLevelBox;
 
 	private JLabel boardSizeLabel = new JLabel("Board size:");
 	private JLabel boatQuantityLabel = new JLabel("Boat Quantity:");
+	private JLabel difficultyLevelLabel = new JLabel("Difficulty:");
 
 	private int selectedBoardSize = Util.boardSize;
 	private int selectedBoatQuantity = Util.boatLengthLimit;
+	private Difficulty selectedDifficulty = Util.gameDifficulty;
 
 	public StartPanel(GameFrame frame) {
 		super(frame);
 		start.setBounds(frame.getWidth() - 110, frame.getHeight() - 50, Util.commonButtonWidth, Util.buttonHeight);
 		start.addActionListener(e -> start_buttonAction());
 		this.add(start);
-		
-		int x = this.getWidth() / 2 - 25, y = this.getHeight() / 2 - 50;
 
-		Integer boardSizeOptions[] = new Integer[] {
-				6, 7, 8, 9, 10, 11, 12, 13, 14, 15
-		};
-		boardSizeBox = new JComboBox<Integer>(boardSizeOptions);
+		// initBoardSizeOption(x, y);
+		// initBoatQuantityOption(x, y);
 		
-		boardSizeBox.addActionListener(e -> {
-			selectedBoardSize = (int) boardSizeBox.getSelectedItem();
-			selectedBoatQuantity = selectedBoardSize / 3 + 1;
-		});
-		
-		boardSizeBox.setSelectedItem(Util.boardSize);
-		
-		boardSizeLabel.setBounds(x - 100, y, 100, 25);
-		boardSizeBox.setBounds(x, y, 50, 25);
-
-		Integer boatQuantityOptions[] = new Integer[] {
-				2, 3, 4, 5, 6
-		};
-		boatQuantityBox = new JComboBox<Integer>(boatQuantityOptions);
-		
-		boatQuantityBox.addActionListener(e -> {
-			selectedBoatQuantity = (int)boatQuantityBox.getSelectedItem() + 1;
-		});
-		
-		boatQuantityBox.setSelectedItem(Util.boatLengthLimit - 1);
-		
-		boatQuantityLabel.setBounds(x - 123, y + 30, 120, 25);
-		boatQuantityBox.setBounds(x, y + 30, 50, 25);
-		
-		this.add(boardSizeLabel);
-		this.add(boardSizeBox);
-		this.add(boatQuantityLabel);
-		this.add(boatQuantityBox);
+		initAllOptions();
+		initBounds();
+		initListeners();
+		addAll();
 	}
 	
+	private void initAllOptions() {
+		Integer sizes[] = new Integer[] {
+				6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+		};
+		boardSizeBox = new JComboBox<Integer>(sizes);
+		
+		Integer quantities[] = new Integer[] {
+				2, 3, 4, 5, 6
+		};
+		boatQuantityBox = new JComboBox<Integer>(quantities);
+		
+		Difficulty difficulties[] = new Difficulty[] {
+				Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD
+		};
+		difficultyLevelBox = new JComboBox<Difficulty>(difficulties);
+	}
+	
+	private void initBounds() {
+		int x = this.getWidth() / 2 - 25, y = this.getHeight() / 2 - 50;
+		
+		int boxWidth = 100, boxHeight = 25;
+		
+		boardSizeLabel.setBounds(x - 100, y, 100, boxHeight);
+		boardSizeBox.setBounds(x, y, boxWidth, boxHeight);
+		
+		boatQuantityLabel.setBounds(x - 123, y + 30, 123, boxHeight);
+		boatQuantityBox.setBounds(x, y + 30, boxWidth, boxHeight);
+		
+		difficultyLevelLabel.setBounds(x - 87, y + 60, 87, boxHeight);
+		difficultyLevelBox.setBounds(x, y + 60, boxWidth, boxHeight);
+	}
+	
+	private void initListeners() {
+		boardSizeBox.addActionListener(e -> {
+			selectedBoardSize = (int) boardSizeBox.getSelectedItem();
+		});
+
+		boatQuantityBox.addActionListener(e -> {
+			selectedBoatQuantity = (int) boatQuantityBox.getSelectedItem() + 1;
+		});
+		
+		difficultyLevelBox.addActionListener(e -> {
+			selectedDifficulty = (Difficulty) difficultyLevelBox.getSelectedItem();
+		});
+	}
+	
+	private void addAll() {
+		this.add(boardSizeLabel);
+		this.add(boardSizeBox);
+		
+		this.add(boatQuantityLabel);
+		this.add(boatQuantityBox);
+		
+		this.add(difficultyLevelLabel);
+		this.add(difficultyLevelBox);
+	}
+
 	private boolean checkValidSelections() {
-		switch(selectedBoardSize) {
+		switch (selectedBoardSize) {
 		case 6:
 		case 7:
 		case 8:
-			if(selectedBoatQuantity > 4) {
+			if (selectedBoatQuantity > 4) {
 				return false;
 			}
 			break;
@@ -78,12 +112,13 @@ public class StartPanel extends GamePanel {
 	}
 
 	private void start_buttonAction() {
-		if(!checkValidSelections()) {
+		if (!checkValidSelections()) {
 			JOptionPane.showMessageDialog(this, "Please select a smaller amount of boats or increase board size");
 			return;
 		}
 		Util.boardSize = selectedBoardSize;
 		Util.boatLengthLimit = selectedBoatQuantity;
+		Util.gameDifficulty = selectedDifficulty;
 		frame.setVisible(false);
 		frame.restart();
 		frame.setVisible(true);

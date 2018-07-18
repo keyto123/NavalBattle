@@ -66,18 +66,34 @@ public class CpuBoard extends Board {
 
 	private void cpuAttack() {
 
-		if (useSmartAttack) {
-			smartAttack();
-		} else {
-			Point point = gm.cpuSmartAttackPoint();
-			if(point == null) {
-				randomAttack();				
-			} else {
-				firstHit.setLocation(point);
-				lastAttackPoint.setLocation(point);
-				useSmartAttack = true;
+		switch(Util.gameDifficulty) {
+		case EASY:
+			randomAttack();
+			break;
+			
+		case MEDIUM:
+			if(useSmartAttack) {
 				smartAttack();
+			} else {
+				randomAttack();
 			}
+			break;
+			
+		case HARD:
+			if (useSmartAttack) {
+				smartAttack();
+			} else {
+				Point point = gm.cpuSmartAttackPoint();
+				if(point == null) {
+					randomAttack();				
+				} else {
+					firstHit.setLocation(point);
+					lastAttackPoint.setLocation(point);
+					useSmartAttack = true;
+					smartAttack();
+				}
+			}
+			break;
 		}
 
 	}
