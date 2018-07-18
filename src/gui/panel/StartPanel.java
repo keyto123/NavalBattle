@@ -35,7 +35,6 @@ public class StartPanel extends GamePanel {
 		boardSizeBox = new JComboBox<Integer>(boardSizeOptions);
 		
 		boardSizeBox.addActionListener(e -> {
-			System.out.println(boardSizeBox.getSelectedItem());
 			selectedBoardSize = (int) boardSizeBox.getSelectedItem();
 			selectedBoatQuantity = selectedBoardSize / 3 + 1;
 		});
@@ -46,16 +45,15 @@ public class StartPanel extends GamePanel {
 		boardSizeBox.setBounds(x, y, 50, 25);
 
 		Integer boatQuantityOptions[] = new Integer[] {
-				3, 4, 5, 6, 7
+				2, 3, 4, 5, 6
 		};
 		boatQuantityBox = new JComboBox<Integer>(boatQuantityOptions);
 		
 		boatQuantityBox.addActionListener(e -> {
-			System.out.println(boatQuantityBox.getSelectedItem());
-			selectedBoatQuantity = (int)boatQuantityBox.getSelectedItem();
+			selectedBoatQuantity = (int)boatQuantityBox.getSelectedItem() + 1;
 		});
 		
-		boatQuantityBox.setSelectedItem(Util.boatLengthLimit);
+		boatQuantityBox.setSelectedItem(Util.boatLengthLimit - 1);
 		
 		boatQuantityLabel.setBounds(x - 123, y + 30, 120, 25);
 		boatQuantityBox.setBounds(x, y + 30, 50, 25);
@@ -86,8 +84,9 @@ public class StartPanel extends GamePanel {
 		}
 		Util.boardSize = selectedBoardSize;
 		Util.boatLengthLimit = selectedBoatQuantity;
-		frame.dispose();
-		frame = new GameFrame();
+		frame.setVisible(false);
+		frame.restart();
+		frame.setVisible(true);
 		frame.battleStarted();
 	}
 }

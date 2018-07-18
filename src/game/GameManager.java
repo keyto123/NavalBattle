@@ -1,5 +1,7 @@
 package game;
 
+import java.awt.Point;
+
 import javax.swing.JOptionPane;
 
 import game.boats.BoatType;
@@ -60,6 +62,10 @@ public final class GameManager {
 	
 	public Power getPlayerPower() {
 		return playerBoard.getActivePower();
+	}
+	
+	public Point cpuSmartAttackPoint() {
+		return playerBoard.possibleSmartAttackPoint();
 	}
 
 	public void resetCpuPower() {

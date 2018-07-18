@@ -237,4 +237,30 @@ public abstract class Board extends BasePanel {
 	public void resetPower() {
 		this.activePower = Power.NONE;
 	}
+	
+	public Point possibleSmartAttackPoint() {
+		Point p = new Point(0, 0);
+		for(int i = 0; i < buttons.length; i++) {
+			for(int j = 0; j < buttons[0].length; j++) {
+				p.setLocation(i, j);
+				if(checkPossibleSmartAttackPoint(p)) {
+					return p;
+				}
+			}
+		}
+		return null;
+	}
+	
+	private boolean checkPossibleSmartAttackPoint(Point point) {
+		
+		if(buttons[point.x][point.y].hasBoat() && !buttons[point.x][point.y].isEnabled()) {
+			if(point.y > 0 && buttons[point.x][point.y - 1].isEnabled()) {
+				return true;
+			}
+			if(point.y < (Util.boardSize - 1) && buttons[point.x][point.y + 1].isEnabled()) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

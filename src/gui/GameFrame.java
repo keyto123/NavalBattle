@@ -14,19 +14,35 @@ public class GameFrame extends JFrame {
 
 	public GameFrame() {
 		this.setTitle("Naval Battle");
-		this.setSize(25 + Util.boardSize * 60, 170 + Util.boardSize * 30);
-		
-		this.setLocationRelativeTo(null);
+		this.initSize();
 		
 		this.setLayout(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		startPanel = new StartPanel(this);
-		startPanel.setVisible(true);
-		this.add(startPanel);
+		initPanel();
 
 		this.setResizable(false);
 		this.setVisible(true);
+	}
+	
+	private void initSize() {
+		this.setSize(25 + Util.boardSize * 60, 170 + Util.boardSize * 30);
+		this.setLocationRelativeTo(null);
+	}
+	
+	private void initPanel() {
+		if(startPanel != null) {
+			this.remove(startPanel);
+		}
+		startPanel = new StartPanel(this);
+		startPanel.setVisible(true);
+		this.add(startPanel);
+	}
+	
+	public void restart() {
+		this.initSize();
+		this.initPanel();
+		this.repaint();
 	}
 
 	public void battleFinished() {

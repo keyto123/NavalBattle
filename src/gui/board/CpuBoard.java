@@ -69,7 +69,15 @@ public class CpuBoard extends Board {
 		if (useSmartAttack) {
 			smartAttack();
 		} else {
-			randomAttack();
+			Point point = gm.cpuSmartAttackPoint();
+			if(point == null) {
+				randomAttack();				
+			} else {
+				firstHit.setLocation(point);
+				lastAttackPoint.setLocation(point);
+				useSmartAttack = true;
+				smartAttack();
+			}
 		}
 
 	}
@@ -124,7 +132,7 @@ public class CpuBoard extends Board {
 
 			// shouldn't waste a movement, so random attack
 			if (result == AttackStatus.INVALIDATTACK) {
-				randomAttack();
+				cpuAttack();
 			}
 
 		}
