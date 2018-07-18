@@ -46,16 +46,16 @@ public class StartPanel extends GamePanel {
 				6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 		};
 		boardSizeBox = new JComboBox<Integer>(sizes);
+		boardSizeBox.setSelectedItem(Util.boardSize);
 		
 		Integer quantities[] = new Integer[] {
 				2, 3, 4, 5, 6
 		};
 		boatQuantityBox = new JComboBox<Integer>(quantities);
+		boatQuantityBox.setSelectedItem(Util.boatLengthLimit - 1);
 		
-		Difficulty difficulties[] = new Difficulty[] {
-				Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD
-		};
-		difficultyLevelBox = new JComboBox<Difficulty>(difficulties);
+		difficultyLevelBox = new JComboBox<Difficulty>(Difficulty.values());
+		difficultyLevelBox.setSelectedItem(Util.gameDifficulty);
 	}
 	
 	private void initBounds() {

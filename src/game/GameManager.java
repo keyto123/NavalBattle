@@ -67,6 +67,10 @@ public final class GameManager {
 	public Point cpuSmartAttackPoint() {
 		return playerBoard.possibleSmartAttackPoint();
 	}
+	
+	public boolean cpuPossibleDiagonalMovement(Point p) {
+		return playerBoard.checkPossibleDiagonalAttack(p);
+	}
 
 	public void resetCpuPower() {
 		cpuBoard.resetPower();

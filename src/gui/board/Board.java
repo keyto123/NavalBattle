@@ -191,7 +191,7 @@ public abstract class Board extends BasePanel {
 		int x = attack.point.x, y = attack.point.y;
 		buttons[x][y].setEnabled(false);
 		useActivePower(attack);
-		
+
 		if (checkExplodedBoat(attack.point)) {
 			activePower = buttons[x][y].getBoatType().getPower();
 		}
@@ -237,27 +237,56 @@ public abstract class Board extends BasePanel {
 	public void resetPower() {
 		this.activePower = Power.NONE;
 	}
-	
+
 	public Point possibleSmartAttackPoint() {
 		Point p = new Point(0, 0);
-		for(int i = 0; i < buttons.length; i++) {
-			for(int j = 0; j < buttons[0].length; j++) {
+		for (int i = 0; i < buttons.length; i++) {
+			for (int j = 0; j < buttons[0].length; j++) {
 				p.setLocation(i, j);
-				if(checkPossibleSmartAttackPoint(p)) {
+				if (checkPossibleSmartAttackPoint(p)) {
 					return p;
 				}
 			}
 		}
 		return null;
 	}
-	
-	private boolean checkPossibleSmartAttackPoint(Point point) {
+
+	public boolean checkPossibleDiagonalAttack(Point p) {
+		Point possibles = new Point(0, 0);
+		for(int i = -1; i < 2; i += 2) {
+			for(int j = -1; j < 2; j += 2) {
+				possibles.setLocation(p.x + i, p.y + j);
+				if(checkPossibleAttackPoint(possibles)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean checkPossibleAttackPoint(Point p) {
+		if (p.x < 0 || p.x >= Util.boardSize) {
+			return false;
+		}
 		
-		if(buttons[point.x][point.y].hasBoat() && !buttons[point.x][point.y].isEnabled()) {
-			if(point.y > 0 && buttons[point.x][point.y - 1].isEnabled()) {
+		if(p.y < 0 || p.y >= Util.boardSize) {
+			return false;
+		}
+		
+		if(!buttons[p.x][p.y].isEnabled()) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	private boolean checkPossibleSmartAttackPoint(Point point) {
+
+		if (buttons[point.x][point.y].hasBoat() && !buttons[point.x][point.y].isEnabled()) {
+			if (point.y > 0 && buttons[point.x][point.y - 1].isEnabled()) {
 				return true;
 			}
-			if(point.y < (Util.boardSize - 1) && buttons[point.x][point.y + 1].isEnabled()) {
+			if (point.y < (Util.boardSize - 1) && buttons[point.x][point.y + 1].isEnabled()) {
 				return true;
 			}
 		}
