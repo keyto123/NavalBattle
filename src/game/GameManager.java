@@ -59,19 +59,19 @@ public final class GameManager {
 	public AttackStatus cpuAttack(Attack attack) {
 		return playerBoard.receiveCpuAttack(attack);
 	}
-	
+
 	public Power getPlayerPower() {
 		return playerBoard.getActivePower();
 	}
-	
+
 	public Point cpuSmartAttackPoint() {
 		return playerBoard.possibleSmartAttackPoint();
 	}
-	
+
 	public boolean cpuPossibleDiagonalMovement(Point p) {
 		return playerBoard.checkPossibleDiagonalAttack(p);
 	}
-	
+
 	public boolean cpuAttackBoat(Point p) {
 		return playerBoard.hasBoat(p.x, p.y);
 	}
@@ -79,7 +79,7 @@ public final class GameManager {
 	public void resetCpuPower() {
 		cpuBoard.resetPower();
 	}
-	
+
 	public void resetPlayerPower() {
 		playerBoard.resetPower();
 	}

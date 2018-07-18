@@ -74,10 +74,33 @@ public abstract class Board extends BasePanel {
 	}
 
 	public boolean hasBoat(int x, int y) {
-		if(!checkValidPosition(x, y)) {
+		if (!checkValidPosition(x, y)) {
 			return false;
 		}
 		return buttons[x][y].hasBoat();
+	}
+
+	public boolean hasDisabledBoat(int x, int y) {
+		if (hasBoat(x, y)) {
+			return !buttons[x][y].isEnabled();
+		}
+		return false;
+	}
+	
+	public boolean hasDisabledBoat(Point p) {
+		return hasDisabledBoat(p.x, p.y);
+	}
+
+	private boolean hasEnabledBoat(int x, int y) {
+		if (hasBoat(x, y)) {
+			return buttons[x][y].isEnabled();
+		}
+		return false;
+	}
+	
+	@SuppressWarnings("unused")
+	private boolean hasEnabledBoat(Point p) {
+		return hasEnabledBoat(p.x, p.y);
 	}
 
 	protected boolean setButtonBoat(BoardButton b, BoatType bt, boolean player) {
@@ -148,13 +171,17 @@ public abstract class Board extends BasePanel {
 		}
 		return true;
 	}
-
+	
 	protected boolean checkValidPosition(int x, int y) {
-		return !(x < 0 || x >= buttons.length || y < 0 || y >= buttons.length || !buttons[x][y].isEnabled());
+		return !(x < 0 || x >= Util.boardSize || y < 0 || y >= Util.boardSize);
+	}
+
+	protected boolean checkValidAttackPosition(int x, int y) {
+		return checkValidPosition(x, y) && buttons[x][y].isEnabled();
 	}
 
 	protected boolean checkValidPosition(Point point) {
-		return this.checkValidPosition(point.x, point.y);
+		return this.checkValidAttackPosition(point.x, point.y);
 	}
 
 	protected Point getBoatHead(Point point) {
@@ -247,14 +274,14 @@ public abstract class Board extends BasePanel {
 		for (int i = 0; i < buttons.length; i++) {
 			for (int j = 0; j < buttons[0].length; j++) {
 				p.setLocation(i, j);
-				
-				if(Util.gameDifficulty == Difficulty.VERYHARD) {
-					if(checkPossibleSmartAttackPoint2(p)) {
+
+				if (Util.gameDifficulty == Difficulty.VERYHARD) {
+					if (checkPossibleSmartAttackPoint2(p)) {
 						return p;
 					}
-					break;
+					continue;
 				}
-				
+
 				if (checkPossibleSmartAttackPoint(p)) {
 					return p;
 				}
@@ -265,10 +292,10 @@ public abstract class Board extends BasePanel {
 
 	public boolean checkPossibleDiagonalAttack(Point p) {
 		Point possibles = new Point(0, 0);
-		for(int i = -1; i < 2; i += 2) {
-			for(int j = -1; j < 2; j += 2) {
+		for (int i = -1; i < 2; i += 2) {
+			for (int j = -1; j < 2; j += 2) {
 				possibles.setLocation(p.x + i, p.y + j);
-				if(checkPossibleAttackPoint(possibles)) {
+				if (checkPossibleAttackPoint(possibles)) {
 					return true;
 				}
 			}
@@ -280,47 +307,46 @@ public abstract class Board extends BasePanel {
 		if (p.x < 0 || p.x >= Util.boardSize) {
 			return false;
 		}
-		
-		if(p.y < 0 || p.y >= Util.boardSize) {
+
+		if (p.y < 0 || p.y >= Util.boardSize) {
 			return false;
 		}
-		
-		if(!buttons[p.x][p.y].isEnabled()) {
+
+		if (!buttons[p.x][p.y].isEnabled()) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
 	private boolean checkPossibleSmartAttackPoint(Point point) {
 
-		if (buttons[point.x][point.y].hasBoat() && !buttons[point.x][point.y].isEnabled()) {
-			
-			if (point.y > 0 && buttons[point.x][point.y - 1].isEnabled()) {
+		if (hasDisabledBoat(point)) {
+
+			if (checkValidAttackPosition(point.x, point.y - 1)) {
 				return true;
 			}
-			
-			if (point.y < (Util.boardSize - 1) && buttons[point.x][point.y + 1].isEnabled()) {
+
+			if (checkValidAttackPosition(point.x, point.y + 1)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	private boolean checkPossibleSmartAttackPoint2(Point point) {
-		
-		int x = point.x, y = point.y;
-		
-		if (buttons[x][y].hasBoat()  && !buttons[x][y].isEnabled()) {
-			
-			if (y > 0 && buttons[x][y - 1].isEnabled() && buttons[x][y - 1].hasBoat()) {
+
+		if (hasDisabledBoat(point)) {
+
+			if (hasEnabledBoat(point.x, point.y - 1)) {
 				return true;
 			}
-			
-			if (y < (Util.boardSize - 1) && buttons[x][y + 1].isEnabled() && buttons[x][y + 1].hasBoat()) {
+
+			if (hasEnabledBoat(point.x, point.y + 1)) {
 				return true;
 			}
 		}
+
 		return false;
 	}
 }

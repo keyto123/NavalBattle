@@ -34,40 +34,41 @@ public class AttackFunctions {
 			break;
 
 		case MEDIUM:
-			if (useSmartAttack) {
-				smartAttack();
-			} else {
-				randomAttack();
-			}
+			mediumAttack();
 			break;
 
 		case HARD:
-			if (useSmartAttack) {
-				smartAttack();
-			} else {
-				Point point = gm.cpuSmartAttackPoint();
-				if (point == null) {
-					randomAttack();
-				} else {
-					smartAttack2(point);
-				}
-			}
+		case VERYHARD:
+			hardAttack();
 			break;
 
-		case VERYHARD:
-			if (useSmartAttack) {
-				smartAttack();
-			} else {
-				Point point = gm.cpuSmartAttackPoint();
-				if (point == null) {
-					guidedAttack();
-				} else {
-					smartAttack2(point);
-				}
-			}
-			break;
 		}
 		firstAttack = false;
+	}
+	
+	private void mediumAttack() {
+		if (useSmartAttack) {
+			smartAttack();
+		} else {
+			randomAttack();
+		}
+	}
+
+	private void hardAttack() {
+		if (useSmartAttack) {
+			smartAttack();
+		} else {
+			Point point = gm.cpuSmartAttackPoint();
+			if (point == null) {
+				if(Util.gameDifficulty == Difficulty.VERYHARD) {
+					guidedAttack();
+				} else {
+					randomAttack();					
+				}
+			} else {
+				smartAttack2(point);
+			}
+		}
 	}
 
 	private void randomAttack() {
