@@ -2,19 +2,17 @@ package gui;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.util.Scanner;
 
 import javax.swing.JDialog;
 import javax.swing.JTextPane;
 
 /**
- * 
- * @author lucas
  * @reference - <a href=
  *            "https://stackoverflow.com/questions/4716503/reading-a-plain-text-file-in-java">reading
- *            text file</a>
+ *            text file</a><br>
+ *            - <a href="https://stackoverflow.com/questions/309424/read-convert-an-inputstream-to-a-string">Converting inputstream to string</a>
  */
 
 @SuppressWarnings("serial")
@@ -44,18 +42,21 @@ class TutorialDialog extends JDialog {
 
 		tutorialMsgPane.setContentType("text/html");
 		tutorialMsgPane.setEditable(false);
-		tutorialMsgPane.setText(readFile("resource/tutorial.html"));
+		tutorialMsgPane.setText(readFile("tutorial.html"));
 	}
 
 	private static String readFile(String path) {
-		try {
-			byte encoded[] = Files.readAllBytes(Paths.get(path));
-			return new String(encoded, Charset.defaultCharset());
+		String fileContent = null;
+		try (InputStream is = TutorialDialog.class.getResourceAsStream("/" + path)) {
+
+			try(Scanner s = new Scanner(is)) {
+				s.useDelimiter("\\A");
+				fileContent = s.hasNext() ? s.next() : "";				
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println(e.getMessage());
-			return null;
 		}
+		return fileContent;
 	}
 
 }
