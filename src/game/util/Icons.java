@@ -8,6 +8,12 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+/**
+ * @Reference 
+ * 		-	<a href="https://stackoverflow.com/questions/9864267/loading-image-resource">Image from resource</a><br>
+ * 		-	<a href="https://stackoverflow.com/questions/2386064/how-do-i-crop-an-image-in-java">Image Cropping</a><br>
+ */
+
 public final class Icons {
 	
 	private Icons() {}
