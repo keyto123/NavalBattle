@@ -3,12 +3,12 @@ package game.cpu;
 import java.awt.Point;
 import java.util.Random;
 
-import game.Attack;
-import game.AttackStatus;
 import game.Difficulty;
 import game.GameManager;
-import game.Util;
+import game.battle.Attack;
+import game.battle.AttackStatus;
 import game.boats.Power;
+import game.util.Configs;
 
 public class AttackFunctions {
 
@@ -28,7 +28,7 @@ public class AttackFunctions {
 	public void cpuAttack(Power power) {
 		this.activePower = power;
 
-		switch (Util.gameDifficulty) {
+		switch (Configs.gameDifficulty) {
 		case EASY:
 			randomAttack();
 			break;
@@ -45,7 +45,7 @@ public class AttackFunctions {
 		}
 		firstAttack = false;
 	}
-	
+
 	private void mediumAttack() {
 		if (useSmartAttack) {
 			smartAttack();
@@ -60,10 +60,10 @@ public class AttackFunctions {
 		} else {
 			Point point = gm.cpuSmartAttackPoint();
 			if (point == null) {
-				if(Util.gameDifficulty == Difficulty.VERYHARD) {
+				if (Configs.gameDifficulty == Difficulty.VERYHARD) {
 					guidedAttack();
 				} else {
-					randomAttack();					
+					randomAttack();
 				}
 			} else {
 				smartAttack2(point);
@@ -89,7 +89,7 @@ public class AttackFunctions {
 
 	private void guidedAttack() {
 		int direction;
-		Diagonal diagonal;
+		Direction diagonal;
 		Attack attack;
 		AttackStatus status;
 		Point nextAttackPoint = new Point(0, 0);
@@ -101,9 +101,11 @@ public class AttackFunctions {
 
 		do {
 			direction = rand.nextInt(4);
-			diagonal = Diagonal.values[direction];
+			diagonal = Direction.values.get(Direction.diagonalIndex(direction));
+
 			int nextX = lastAttackPoint.x + diagonal.x;
 			int nextY = lastAttackPoint.y + diagonal.y;
+
 			nextAttackPoint.setLocation(nextX, nextY);
 			attack = new Attack(nextAttackPoint, activePower);
 		} while ((status = gm.cpuAttack(attack)) == AttackStatus.INVALIDATTACK);
@@ -127,7 +129,7 @@ public class AttackFunctions {
 			Point nextAttackPoint = new Point(lastAttackPoint.x, lastAttackPoint.y + 1);
 			Attack attack = new Attack(nextAttackPoint, activePower);
 
-			if (Util.gameDifficulty == Difficulty.VERYHARD && !gm.cpuAttackBoat(attack.point)) {
+			if (Configs.gameDifficulty == Difficulty.VERYHARD && !gm.cpuAttackBoat(attack.point)) {
 				smartAttackFail = true;
 				lastAttackPoint.setLocation(firstHit);
 				smartAttack();
@@ -151,7 +153,7 @@ public class AttackFunctions {
 			Point nextAttackPoint = new Point(lastAttackPoint.x, lastAttackPoint.y - 1);
 			Attack attack = new Attack(nextAttackPoint, activePower);
 
-			if (Util.gameDifficulty == Difficulty.VERYHARD && !gm.cpuAttackBoat(attack.point)) {
+			if (Configs.gameDifficulty == Difficulty.VERYHARD && !gm.cpuAttackBoat(attack.point)) {
 				useSmartAttack = false;
 				smartAttackFail = false;
 				cpuAttack(activePower);

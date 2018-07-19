@@ -1,4 +1,4 @@
-package game;
+package game.battle;
 
 public enum AttackStatus {
 	INVALIDATTACK(-1), MISS(0), HIT(1);

@@ -7,12 +7,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import game.Attack;
-import game.AttackStatus;
 import game.GameManager;
-import game.Util;
+import game.battle.Attack;
+import game.battle.AttackStatus;
 import game.boats.BoatType;
 import game.boats.Power;
+import game.util.Configs;
 import gui.panel.BattlePanel;
 
 @SuppressWarnings("serial")
@@ -78,7 +78,7 @@ public class PlayerBoard extends Board {
 		updatePowerLabel();
 
 		if (checkFinish()) {
-			parentPanel.getGm().finishGame(Util.cpuWin);
+			parentPanel.getGm().finishGame(Configs.cpuWinFlag);
 		}
 
 		return as;

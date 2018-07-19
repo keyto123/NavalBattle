@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import game.Difficulty;
-import game.Util;
+import game.util.Configs;
 import gui.GameFrame;
 
 @SuppressWarnings("serial")
@@ -22,13 +22,14 @@ public class StartPanel extends GamePanel {
 	private JLabel boatQuantityLabel = new JLabel("Boat Quantity:");
 	private JLabel difficultyLevelLabel = new JLabel("Difficulty:");
 
-	private int selectedBoardSize = Util.boardSize;
-	private int selectedBoatQuantity = Util.boatLengthLimit;
-	private Difficulty selectedDifficulty = Util.gameDifficulty;
+	private int selectedBoardSize = Configs.boardSize;
+	private int selectedBoatQuantity = Configs.boatLengthLimit;
+	private Difficulty selectedDifficulty = Configs.gameDifficulty;
 
 	public StartPanel(GameFrame frame) {
 		super(frame);
-		start.setBounds(frame.getWidth() - 110, frame.getHeight() - 50, Util.commonButtonWidth, Util.buttonHeight);
+		start.setBounds(frame.getWidth() - 110, frame.getHeight() - 50, Configs.commonButtonWidth,
+				Configs.buttonHeight);
 		start.addActionListener(e -> start_buttonAction());
 		this.add(start);
 
@@ -46,16 +47,16 @@ public class StartPanel extends GamePanel {
 				6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 		};
 		boardSizeBox = new JComboBox<Integer>(sizes);
-		boardSizeBox.setSelectedItem(Util.boardSize);
+		boardSizeBox.setSelectedItem(Configs.boardSize);
 
 		Integer quantities[] = new Integer[] {
 				2, 3, 4, 5, 6
 		};
 		boatQuantityBox = new JComboBox<Integer>(quantities);
-		boatQuantityBox.setSelectedItem(Util.boatLengthLimit - 1);
+		boatQuantityBox.setSelectedItem(Configs.boatLengthLimit - 1);
 
 		difficultyLevelBox = new JComboBox<Difficulty>(Difficulty.values());
-		difficultyLevelBox.setSelectedItem(Util.gameDifficulty);
+		difficultyLevelBox.setSelectedItem(Configs.gameDifficulty);
 	}
 
 	private void initBounds() {
@@ -116,9 +117,9 @@ public class StartPanel extends GamePanel {
 			JOptionPane.showMessageDialog(this, "Please select a smaller amount of boats or increase board size");
 			return;
 		}
-		Util.boardSize = selectedBoardSize;
-		Util.boatLengthLimit = selectedBoatQuantity;
-		Util.gameDifficulty = selectedDifficulty;
+		Configs.boardSize = selectedBoardSize;
+		Configs.boatLengthLimit = selectedBoatQuantity;
+		Configs.gameDifficulty = selectedDifficulty;
 		frame.setVisible(false);
 		frame.restart();
 		frame.setVisible(true);

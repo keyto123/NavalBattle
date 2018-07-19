@@ -3,7 +3,7 @@ package gui.panel;
 import javax.swing.JButton;
 
 import game.GameManager;
-import game.Util;
+import game.util.Configs;
 import gui.GameFrame;
 import gui.board.CpuBoard;
 import gui.board.PlayerBoard;
@@ -34,12 +34,13 @@ public class BattlePanel extends GamePanel {
 
 	private void initButtons() {
 		// Finish
-		finish.setBounds(this.getWidth() - 110, this.getHeight() - 50, Util.commonButtonWidth, Util.buttonHeight);
+		finish.setBounds(this.getWidth() - 110, this.getHeight() - 50, Configs.commonButtonWidth, Configs.buttonHeight);
 		finish.addActionListener(e -> finish_buttonAction());
 		this.add(finish);
 
 		// Start
-		startGame.setBounds(this.getWidth() - 220, this.getHeight() - 50, Util.commonButtonWidth, Util.buttonHeight);
+		startGame.setBounds(this.getWidth() - 220, this.getHeight() - 50, Configs.commonButtonWidth,
+				Configs.buttonHeight);
 		startGame.addActionListener(e -> {
 			gm.startGame();
 			startGame.setEnabled(false);
@@ -52,14 +53,14 @@ public class BattlePanel extends GamePanel {
 	}
 
 	private void initPanels() {
-		playerPanel.setBounds(Util.minButtonX + 20, 10, playerPanel.getWidth(), playerPanel.getHeight());
+		playerPanel.setBounds(Configs.minButtonX + 20, 10, playerPanel.getWidth(), playerPanel.getHeight());
 		this.add(playerPanel);
 
-		cpuPanel.setBounds(Util.minButtonX + playerPanel.getWidth() + 25, 10, cpuPanel.getWidth(),
+		cpuPanel.setBounds(Configs.minButtonX + playerPanel.getWidth() + 25, 10, cpuPanel.getWidth(),
 				cpuPanel.getHeight());
 		this.add(cpuPanel);
 
-		boatPanel.setBounds(Util.minButtonX, playerPanel.getHeight() + 5, boatPanel.getWidth(),
+		boatPanel.setBounds(Configs.minButtonX, playerPanel.getHeight() + 5, boatPanel.getWidth(),
 				boatPanel.getHeight());
 		this.add(boatPanel);
 	}

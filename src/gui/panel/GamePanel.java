@@ -2,7 +2,7 @@ package gui.panel;
 
 import javax.swing.JButton;
 
-import game.Util;
+import game.util.Configs;
 import gui.GameFrame;
 
 @SuppressWarnings("serial")
@@ -13,7 +13,7 @@ public abstract class GamePanel extends BasePanel {
 	protected GamePanel(GameFrame frame) {
 		super(frame.getWidth(), frame.getHeight(), frame);
 
-		quit.setBounds(10, frame.getHeight() - 50, Util.commonButtonWidth, Util.buttonHeight);
+		quit.setBounds(10, frame.getHeight() - 50, Configs.commonButtonWidth, Configs.buttonHeight);
 		quit.addActionListener(a -> System.exit(0));
 		this.add(quit);
 	}

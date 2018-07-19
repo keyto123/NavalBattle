@@ -4,8 +4,11 @@ import java.awt.Point;
 
 import javax.swing.JOptionPane;
 
+import game.battle.Attack;
+import game.battle.AttackStatus;
 import game.boats.BoatType;
 import game.boats.Power;
+import game.util.Configs;
 import gui.board.CpuBoard;
 import gui.board.PlayerBoard;
 import gui.panel.BoatPanel;
@@ -38,7 +41,7 @@ public final class GameManager {
 	}
 
 	public void finishGame(boolean winner) {
-		if (Util.playerWin == winner) {
+		if (Configs.playerWinFlag == winner) {
 			JOptionPane.showMessageDialog(playerBoard, "You win!");
 		} else {
 			JOptionPane.showMessageDialog(cpuBoard, "You Lose!");

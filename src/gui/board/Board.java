@@ -7,26 +7,27 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import game.Attack;
-import game.AttackStatus;
 import game.Difficulty;
-import game.Util;
+import game.battle.Attack;
+import game.battle.AttackStatus;
 import game.boats.BoatType;
 import game.boats.Power;
+import game.util.Configs;
+import game.util.Icons;
 import gui.panel.BasePanel;
 import gui.panel.BattlePanel;
 
 @SuppressWarnings("serial")
 public abstract class Board extends BasePanel {
 
-	protected BoardButton buttons[][] = new BoardButton[Util.boardSize][Util.boardSize];
+	protected BoardButton buttons[][] = new BoardButton[Configs.boardSize][Configs.boardSize];
 	protected Power activePower = Power.NONE;
 	protected BattlePanel parentPanel;
 
 	private JLabel title = new JLabel();
 
 	protected Board(String name, BattlePanel parentPanel) {
-		super(Util.boardSize * 30, Util.boardSize * 30 + 30, null);
+		super(Configs.boardSize * 30, Configs.boardSize * 30 + 30, null);
 		this.title.setBounds(0, 0, 100, 25);
 		this.title.setText(name);
 		this.add(this.title);
@@ -39,10 +40,10 @@ public abstract class Board extends BasePanel {
 		for (int i = 0; i < buttons.length; i++) {
 			for (int j = 0; j < buttons[0].length; j++) {
 				buttons[i][j] = new BoardButton(i, j, null, null, false);
-				buttons[i][j].setBounds(j * 27, 30 + i * 27, Util.buttonWidth, Util.buttonHeight);
+				buttons[i][j].setBounds(j * 27, 30 + i * 27, Configs.buttonWidth, Configs.buttonHeight);
 				buttons[i][j].setBorder(null);
-				buttons[i][j].setIcon(Util.waterIcon);
-				buttons[i][j].setDisabledIcon(Util.disabledWaterIcon);
+				buttons[i][j].setIcon(Icons.waterIcon);
+				buttons[i][j].setDisabledIcon(Icons.disabledWaterIcon);
 				buttons[i][j].setBackground(Color.BLUE);
 				this.add(buttons[i][j]);
 			}
@@ -86,7 +87,7 @@ public abstract class Board extends BasePanel {
 		}
 		return false;
 	}
-	
+
 	public boolean hasDisabledBoat(Point p) {
 		return hasDisabledBoat(p.x, p.y);
 	}
@@ -97,7 +98,7 @@ public abstract class Board extends BasePanel {
 		}
 		return false;
 	}
-	
+
 	@SuppressWarnings("unused")
 	private boolean hasEnabledBoat(Point p) {
 		return hasEnabledBoat(p.x, p.y);
@@ -137,7 +138,7 @@ public abstract class Board extends BasePanel {
 			b.setHead(false);
 			int x = b.getPosX(), y = b.getPosY();
 			for (int i = 0; i < bt.getLength(); i++) {
-				buttons[x][y + i].setIcon(Util.waterIcon);
+				buttons[x][y + i].setIcon(Icons.waterIcon);
 				buttons[x][y + i].setDisabledIcon(null);
 				buttons[x][y + i].setHasBoat(false);
 			}
@@ -171,9 +172,9 @@ public abstract class Board extends BasePanel {
 		}
 		return true;
 	}
-	
+
 	protected boolean checkValidPosition(int x, int y) {
-		return !(x < 0 || x >= Util.boardSize || y < 0 || y >= Util.boardSize);
+		return !(x < 0 || x >= Configs.boardSize || y < 0 || y >= Configs.boardSize);
 	}
 
 	protected boolean checkValidAttackPosition(int x, int y) {
@@ -275,7 +276,7 @@ public abstract class Board extends BasePanel {
 			for (int j = 0; j < buttons[0].length; j++) {
 				p.setLocation(i, j);
 
-				if (Util.gameDifficulty == Difficulty.VERYHARD) {
+				if (Configs.gameDifficulty == Difficulty.VERYHARD) {
 					if (checkPossibleSmartAttackPoint2(p)) {
 						return p;
 					}
@@ -304,11 +305,11 @@ public abstract class Board extends BasePanel {
 	}
 
 	public boolean checkPossibleAttackPoint(Point p) {
-		if (p.x < 0 || p.x >= Util.boardSize) {
+		if (p.x < 0 || p.x >= Configs.boardSize) {
 			return false;
 		}
 
-		if (p.y < 0 || p.y >= Util.boardSize) {
+		if (p.y < 0 || p.y >= Configs.boardSize) {
 			return false;
 		}
 
